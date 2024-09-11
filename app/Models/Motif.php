@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $Libelle
@@ -27,7 +27,6 @@ use Illuminate\Database\Eloquent\Model;
 class Motif extends Model
 {
     use HasFactory;
-
     /**
      * The attributes that should be cast to native types.
      *
@@ -36,4 +35,5 @@ class Motif extends Model
     protected $casts = [
         'is_accessible_salarie' => 'boolean',
     ];
+
 }
