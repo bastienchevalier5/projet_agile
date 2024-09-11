@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('motifs', function (Blueprint $table) {
             $table->id();
-            $table->string("Libellé",30);
+            $table->string("Libelle",30);
             $table->timestamps();
 
         });
