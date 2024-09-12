@@ -23,9 +23,10 @@ class AbsenceController extends Controller
         //
     }
 
-    public function show(Absence $absence)
+    public function show(Absence $absence,$a)
     {
-
+        $list = Absence::where('id','=',$a)->get();
+        dd($list);
     }
 
     public function edit(Absence $absence)
