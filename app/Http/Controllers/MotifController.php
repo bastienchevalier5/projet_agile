@@ -9,8 +9,8 @@ class MotifController extends Controller
 {
     public function index()
     {
-        $liste = Motif::all();
-        dd($liste);
+        $motifs = Motif::all();
+        return view('motif',compact('motifs'));
     }
 
     public function create()
@@ -23,9 +23,9 @@ class MotifController extends Controller
         // Valider les données de la requête
         $validatedData = $request->validate([
             'Libelle' => 'required|string|max:255',
+            'is_accessible_salarie' => 'required|boolean'
         ]);
 
-        // Créer et enregistrer le nouveau motif
         $motif = Motif::create($validatedData);
 
         // Rediriger vers la page d'index avec un message de succès
@@ -34,11 +34,8 @@ class MotifController extends Controller
 
     public function show(Motif $motif)
     {
-<<<<<<< Updated upstream
-        //
-=======
         return view('detail_motif', compact('motif'));
->>>>>>> Stashed changes
+
     }
 
     public function edit(Motif $motif)

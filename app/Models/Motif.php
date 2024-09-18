@@ -36,6 +36,6 @@ class Motif extends Model
         'is_accessible_salarie' => 'boolean',
     ];
 
-    protected $fillable = ['Libelle'];
+    protected $fillable = ['Libelle','is_accessible_salarie'];
 
 }
