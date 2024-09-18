@@ -9,6 +9,7 @@ class Absence extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['debut','fin','motif_id','user_id'];
     public function motif()
     {
         return $this->belongsTo(Motif::class);
