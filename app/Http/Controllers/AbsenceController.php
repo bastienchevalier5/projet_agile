@@ -9,7 +9,8 @@ class AbsenceController extends Controller
 {
     public function index()
     {
-        return view('absence.index');
+        $absences = Absence::with('user')->with('motif')->get();
+        return view('absence',compact('absences'));
     }
 
     public function create()
@@ -23,10 +24,9 @@ class AbsenceController extends Controller
         //
     }
 
-    public function show(Absence $absence,$a)
+    public function show(Absence $absence)
     {
-        $list = Absence::where('id','=',$a)->get();
-        dd($list);
+        return view('detail_absence',compact('absence'));
     }
 
     public function edit(Absence $absence)

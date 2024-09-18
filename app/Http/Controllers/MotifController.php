@@ -9,8 +9,8 @@ class MotifController extends Controller
 {
     public function index()
     {
-        $liste = Motif::all();
-        dd($liste);
+        $motifs = Motif::all();
+        return view('motif', compact('motifs'));
     }
 
     public function create()
@@ -26,7 +26,7 @@ class MotifController extends Controller
 
     public function show(Motif $motif)
     {
-        //
+        return view('detail_motif',compact('motif'));
     }
 
     public function edit(Motif $motif)
