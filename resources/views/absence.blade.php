@@ -7,7 +7,7 @@
 <ul>
     @foreach ($absences as $absence)
     <li>
-        <a href="{{route('absence.show',$absence->id)}}">{{$absence->user->nom}}</a>
+        <a href="{{route('absence.show',$absence->id)}}">{{$absence->user->prenom}} {{$absence->user->nom}}</a>
     </li>
     @endforeach
 </ul>

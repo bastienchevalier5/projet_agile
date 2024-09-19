@@ -1,7 +1,7 @@
 <?php
 
 namespace Database\Seeders;
-use app\Models\Absence;
+
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         (new MotifSeeder)->run();
         (new AbsenceSeeder)->run();
         (new UserSeeder)->run();
-         // User::factory(10)->create();
+        // User::factory(10)->create();
 
         //  User::factory()->create([
         //    'name' => 'Test User',

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('motifs', function (Blueprint $table) {
-            $table->boolean("is_accessible_salarie")->default(true);
+            $table->boolean('is_accessible_salarie')->default(true);
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('motifs', function (Blueprint $table) {
-             $table->dropColumn("is_accessible_salarie");
+            $table->dropColumn('is_accessible_salarie');
         });
     }
 };

@@ -1,10 +1,10 @@
 <?php
 
 namespace Database\Seeders;
+
 use App\Models\Motif;
-use Database\Factories\MotifFactory;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
 class MotifSeeder extends Seeder
 {
     /**

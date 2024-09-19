@@ -1,76 +1,108 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\User;
+
+use App\Http\Requests\AbsenceRequest;
 use App\Models\Absence;
 use App\Models\Motif;
+use App\Models\User;
 use Illuminate\Http\Request;
-
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 class AbsenceController extends Controller
 {
+    /**
+     * Summary of index
+     * @return View
+     */
     public function index()
     {
         $absences = Absence::all();
-        return view('absence',compact('absences'));
+
+        return view('absence', compact('absences'));
     }
 
+    /**
+     * Summary of create
+     * @return View
+     */
     public function create()
     {
+        $absence = new Absence;
         $motifs = Motif::all();
         $users = User::all();
-        return view('add_absence',compact(['motifs','users']));
 
+        return view('absence_form', compact(['motifs', 'users','absence']));
     }
 
-    public function store(Request $request)
+    /**
+     * Summary of store
+     * @return RedirectResponse
+     */
+    public function store(AbsenceRequest $request)
     {
         $validate = $request->validate([
             'debut' => 'required|date',
             'fin' => 'required|date',
             'motif_id' => 'required|exists:motifs,id',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id',
         ]);
         $absence = Absence::create($validate);
-        return redirect()->route('absence.index')->with('success','Absence créée avec succès');
 
+        return redirect()->route('absence.index')->with('success', 'Absence créée avec succès');
     }
 
+    /**
+     * Summary of show
+     * @return RedirectResponse|View
+     */
     public function show(Absence $absence)
     {
 
-        if ($absence->motif->trashed()){
 
-            return redirect()->route('absence.index')->with('error','Le motif associé à cette absence a été supprimé');
-        }
-        ;
         $absence = Absence::with(['user', 'motif'])->find($absence->id);
+
         return view('detail_absence', compact('absence'));
     }
 
-
+    /**
+     * Summary of edit
+     * @return View
+     */
     public function edit(Absence $absence)
     {
         $absences = Absence::all();
         $motifs = Motif::all();
         $users = User::all();
-        return view('edit_absence',compact(['motifs','users','absence']));
+
+        return view('absence_form', compact(['motifs', 'users', 'absence']));
     }
 
-    public function update(Request $request, Absence $absence)
+    /**
+     * Summary of update
+     * @return RedirectResponse
+     */
+    public function update(AbsenceRequest $request, Absence $absence)
     {
         $validate = $request->validate([
             'debut' => 'required|date',
             'fin' => 'required|date',
             'motif_id' => 'required|exists:motifs,id',
-            'user_id' => 'required|exists:users,id'
+            'user_id' => 'required|exists:users,id',
         ]);
         $absence->update($validate);
-        return redirect()->route('absence.index')->with('success','Absence modifiée avec succès');
+
+        return redirect()->route('absence.index')->with('success', 'Absence modifiée avec succès');
     }
 
+    /**
+     * Summary of destroy
+     * @return RedirectResponse
+     */
     public function destroy(Absence $absence)
     {
         $absence->delete();
-        return redirect()->route('absence.index')->with('success','Absence supprimée avec succès');
+
+        return redirect()->route('absence.index')->with('success', 'Absence supprimée avec succès');
     }
 }

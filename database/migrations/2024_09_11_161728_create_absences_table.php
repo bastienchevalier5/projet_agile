@@ -1,6 +1,7 @@
 <?php
-use App\Models\User;
+
 use App\Models\Motif;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->date('debut');
             $table->date('fin');
-            $table->foreignIdFor(Motif::class,'motif_id');
-            $table->foreignIdFor(User::class,'user_id');
+            $table->foreignIdFor(Motif::class, 'motif_id');
+            $table->foreignIdFor(User::class, 'user_id');
             $table->timestamps();
         });
     }
