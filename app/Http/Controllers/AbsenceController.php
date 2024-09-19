@@ -37,8 +37,13 @@ class AbsenceController extends Controller
 
     public function show(Absence $absence)
     {
-        $absence = Absence::with(['user', 'motif'])->find($absence->id);
 
+        if ($absence->motif->trashed()){
+
+            return redirect()->route('absence.index')->with('error','Le motif associé à cette absence a été supprimé');
+        }
+        ;
+        $absence = Absence::with(['user', 'motif'])->find($absence->id);
         return view('detail_absence', compact('absence'));
     }
 

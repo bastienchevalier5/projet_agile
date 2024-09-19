@@ -1,6 +1,11 @@
 @extends('layouts.app')
 @section('title', 'Détail Absence de ' . $absence->user->prenom.' '.$absence->user->nom)
 @section('content')
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
 <a href="{{ Route('acceuil')}}">Acceuil</a>
 <h1>Absence de {{$absence->user->prenom}} {{$absence->user->nom}}</h1>
 <h4>Motif : {{$absence->motif->Libelle}}</h4>

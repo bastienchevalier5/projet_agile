@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  *
@@ -36,6 +37,7 @@ class Motif extends Model
         'is_accessible_salarie' => 'boolean',
     ];
 
+    use SoftDeletes;
     protected $fillable = ['Libelle','is_accessible_salarie'];
 
 }

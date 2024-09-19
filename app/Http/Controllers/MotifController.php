@@ -46,16 +46,26 @@ class MotifController extends Controller
 
     public function update(Request $request, Motif $motif)
     {
-        $validate = $request->validate([
-            'Libelle' => 'required|string|max:255'
-        ]);
-        $motif->update($validate);
-        return redirect()->route('motif.index')->with('success','Motif modifié avec succès.');
+        $motif->Libelle = $request->Libelle;
+        $motif->is_accessible_salarie = $request->is_accessible_salarie;
+        $motif->save();
+        return redirect()->route('motif.index');
     }
 
     public function destroy(Motif $motif)
     {
         $motif->delete();
-        return redirect()->route('motif.index')->with('success','Motif supprimé avec succès');
+        return redirect()->route('motif.index');
     }
+
+    public function restore(Motif $motif)
+        {
+            $motif = Motif::withTrashed()->find($motif);
+            if ($motif) {
+                $motif->restore();
+                return redirect()->route('motif.index')->with('success', 'Motif restauré avec succès.');
+            }
+            return redirect()->route('motif.index')->with('error', 'Motif non trouvé.');
+        }
+
 }

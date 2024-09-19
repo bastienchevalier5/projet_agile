@@ -10,7 +10,7 @@
         @method('PUT')
         <div>
             <label for="Libelle">Libellé du motif</label>
-            <input type="text" name="Libelle" id="Libelle" value="{{ $motif->Libelle }}">
+            <input type="text" name="Libelle" id="Libelle" value="{{ $motif->Libelle }}" required>
         </div>
 
         <div>

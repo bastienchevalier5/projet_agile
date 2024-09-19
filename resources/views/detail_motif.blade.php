@@ -6,6 +6,8 @@
 <p>Accessible au salarié : {{$motif->is_accessible_salarie ? 'oui':'non'}}</p>
 <p> Date : {{$motif->created_at}}</p>
 <a href="{{ Route('motif.edit',$motif->id)}}">Modifier le motif</a>
+@if ($motif->trashed())
+<a href="{{route('motif.restore')}}">Restaurer</a>
 <form action="{{Route('motif.destroy',$motif->id)}}" method="POST">
     @csrf
     @method('DELETE')
