@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title','Absences')
+@section('title',__('Absences'))
 @section('content')
-<h1 class="h1">Absences</h1>
+<h1 class="h1">{{__('Absences')}}</h1>
 @can ('create-absences')
-    <a class="btn btn-primary" href="{{Route('absence.create')}}">@if (Auth::user()->isAn('salarie')) Demande @else Création @endif d'une absence</a>
+    <a class="btn btn-primary" href="{{Route('absence.create')}}">@if (Auth::user()->isAn('salarie')) {{__('Absence request')}} @else {{__('Add absence')}} @endif</a>
 @endcan
 @if (Auth::user()->isAn('admin'))
     @foreach ($absences as $absence)

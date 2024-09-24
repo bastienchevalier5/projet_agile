@@ -1,9 +1,9 @@
 @extends('layouts.app')
-@section('title','Motifs')
+@section('title',__('Reasons'))
 @section('content')
-<h1 class="h1">Motifs</h1>
+<h1 class="h1">{{__('Reasons')}}</h1>
 @can ('create-motifs')
-    <a class="btn btn-primary" href="{{Route('motif.create')}}">Création de Motif</a>
+    <a class="btn btn-primary" href="{{Route('motif.create')}}">{{__('Add reason')}}</a>
 @endcan
 @foreach ($motifs as $motif)
     <table class="table">

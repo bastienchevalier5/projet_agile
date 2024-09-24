@@ -31,10 +31,12 @@ class AbsenceRequest extends FormRequest
 
     /**
      * Summary of messages
+     *
      * @return array<string>
      */
-    public function messages(){
-        return[
+    public function messages()
+    {
+        return [
 
         ];
     }

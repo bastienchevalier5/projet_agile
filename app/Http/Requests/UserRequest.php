@@ -29,11 +29,12 @@ class UserRequest extends FormRequest
 
     /**
      * Summary of messages
+     *
      * @return array<string>
      */
     public function messages()
     {
-        return[
+        return [
 
         ];
     }

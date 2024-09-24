@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AbsenceRequest;
+use App\Mail\MailDemandeAbsence;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
 use Auth;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Mail;
+use Silber\Bouncer\Bouncer;
+
 class AbsenceController extends Controller
 {
     /**
      * Summary of index
+     *
      * @return View
      */
     public function index()
@@ -21,36 +25,37 @@ class AbsenceController extends Controller
         if (Auth::user()->isAn('admin')) {
             $absences = Absence::with('user', 'motif')->get();
         }
-        // Si l'utilisateur est un salarié, récupérer uniquement ses absences
         elseif (Auth::user()->isAn('salarie')) {
             $absences = Absence::with('motif')->where('user_id', auth()->id())->get();
         }
+        else {
+            return view('absence');
+        }
 
-        // Passer les absences à la vue
         return view('absence', compact('absences'));
     }
 
-
     /**
      * Summary of create
+     *
      * @return View
      */
     public function create()
     {
-        $absence = new Absence;
+        $absence = new Absence();
         $motifs = Motif::all();
         $users = User::all();
 
-        return view('absence_form', compact(['motifs', 'users','absence']));
+        return view('absence_form', compact(['motifs', 'users', 'absence']));
     }
 
     /**
      * Summary of store
+     *
      * @return RedirectResponse
      */
     public function store(AbsenceRequest $request)
     {
-        // Créer l'absence avec les données validées, et attribuer l'user_id en fonction du rôle
         $absence = Absence::create([
             'debut' => $request->debut,
             'fin' => $request->fin,
@@ -58,12 +63,18 @@ class AbsenceController extends Controller
             'user_id' => auth()->user()->isAn('salarie') ? auth()->id() : $request->user_id,
         ]);
 
-        return redirect()->route('absence.index')->with('success', 'Absence créée avec succès.');
-    }
+        $admins = User::whereIs('admin')->get();
 
+        foreach ($admins as $admin) {
+            Mail::to($admin->email)->send(new MailDemandeAbsence($absence,$absence->user,$absence->motif));
+        }
+
+        return redirect()->route('absence.index')->with('success', Auth::user()->isAn('salarie') ? "Un mail a été envoyé aux administrateurs lui indiquant votre demande" : "Absence créée avec succès.");
+    }
 
     /**
      * Summary of show
+     *
      * @return RedirectResponse|View
      */
     public function show(Absence $absence)
@@ -75,6 +86,7 @@ class AbsenceController extends Controller
 
     /**
      * Summary of edit
+     *
      * @return View
      */
     public function edit(Absence $absence)
@@ -88,6 +100,7 @@ class AbsenceController extends Controller
 
     /**
      * Summary of update
+     *
      * @return RedirectResponse
      */
     public function update(AbsenceRequest $request, Absence $absence)
@@ -103,15 +116,19 @@ class AbsenceController extends Controller
         return redirect()->route('absence.index')->with('success', 'Absence modifiée avec succès');
     }
 
+    /**
+     * Summary of validateAbsence
+     * @return mixed|RedirectResponse
+     */
     public function validateAbsence(Absence $absence)
     {
         if (Auth::user()->isAn('salarie')) {
             return redirect()->route('absence.index')->with('error', 'Vous n\'avez pas les droits pour valider cette absence.');
         }
-        if ($absence->statut == false){
-            $absence->statut = true;
+        if ($absence->statut === 0) {
+            $absence->statut = 1;
         } else {
-            $absence->statut = false;
+            $absence->statut = 0;
         }
 
         $absence->save();
@@ -119,9 +136,9 @@ class AbsenceController extends Controller
         return redirect()->route('absence.index');
     }
 
-
     /**
      * Summary of destroy
+     *
      * @return RedirectResponse
      */
     public function destroy(Absence $absence)

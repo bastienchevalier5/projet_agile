@@ -6,13 +6,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MotifRequest;
 use App\Models\Motif;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+
 class MotifController extends Controller
 {
     /**
      * Summary of index
+     *
      * @return View
      */
     public function index()
@@ -24,17 +25,19 @@ class MotifController extends Controller
 
     /**
      * Summary of create
+     *
      * @return View|RedirectResponse
      */
     public function create()
     {
-        $motif = new Motif;
-        return view('motif_form',compact('motif'));
+        $motif = new Motif();
 
+        return view('motif_form', compact('motif'));
     }
 
     /**
      * Summary of store
+     *
      * @return RedirectResponse
      */
     public function store(MotifRequest $request)
@@ -53,6 +56,7 @@ class MotifController extends Controller
 
     /**
      * Summary of show
+     *
      * @return View
      */
     public function show(Motif $motif)
@@ -62,6 +66,7 @@ class MotifController extends Controller
 
     /**
      * Summary of edit
+     *
      * @return View
      */
     public function edit(Motif $motif)
@@ -73,12 +78,12 @@ class MotifController extends Controller
 
     /**
      * Summary of update
+     *
      * @return mixed|RedirectResponse
      */
     public function update(MotifRequest $request, Motif $motif)
     {
         $motif->Libelle = $request->Libelle;
-        $motif->is_accessible_salarie = $request->is_accessible_salarie;
         $motif->save();
 
         return redirect()->route('motif.index');
@@ -86,6 +91,7 @@ class MotifController extends Controller
 
     /**
      * Summary of destroy
+     *
      * @return mixed|RedirectResponse
      */
     public function destroy(Motif $motif)
@@ -97,6 +103,7 @@ class MotifController extends Controller
 
     /**
      * Summary of restore
+     *
      * @return RedirectResponse
      */
     public function restore(Motif $motif)

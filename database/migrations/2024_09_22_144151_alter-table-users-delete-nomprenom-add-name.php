@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('nom');
             $table->dropColumn('prenom');
-            $table->string('name',255);
+            $table->string('name', 255);
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn('name');
-            $table->string('nom',255);
-            $table->string('prenom',255);
+            $table->string('nom', 255);
+            $table->string('prenom', 255);
         });
     }
 };
