@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\Absence;
 use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\Factory;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 class UserController extends Controller
 {
     /**
@@ -32,8 +35,18 @@ class UserController extends Controller
         return view('user_form',compact('user'));
     }
 
-    public function store(Request $request): void
+    /**
+     * Summary of store
+     * @return RedirectResponse
+     */
+    public function store(UserRequest $request)
     {
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ]);
+        return redirect()->route('user.index');
     }
 
     /**
@@ -52,14 +65,23 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('user_form');
+        $users = User::all();
+        return view('user_form',compact('user'));
     }
 
-    public function update(Request $request, User $user): void
+    public function update(UserRequest $request, User $user)
     {
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return redirect()->route('user.index');
     }
 
-    public function destroy(User $user): void
+    public function destroy(User $user)
     {
+        $user->delete();
+        return redirect()->route('user.index');
     }
 }

@@ -1,15 +1,20 @@
 @extends('layouts.app')
 @section('title','Détail Motif')
 @section('content')
-<a href="{{ Route('acceuil')}}">Acceuil</a>
-<h3>Nom du motif : {{$motif->Libelle}}</h3>
-<p>Accessible au salarié : {{$motif->is_accessible_salarie ? 'oui':'non'}}</p>
-<p> Date : {{$motif->created_at}}</p>
-<a href="{{ Route('motif.edit',$motif->id)}}">Modifier le motif</a>
-<form action="{{Route('motif.destroy',$motif->id)}}" method="POST">
-    @csrf
-    @method('DELETE')
-    <button type="submit" onclick="return('Êtes-vous sûr de vouloir supprimer ce motif?')">Supprimer le motif</button>
-</form>
-<a href="{{ Route('motif.index')}}">Retour à la liste des motifs</a>
+<h3 class="h3">Nom du motif : {{$motif->Libelle}}</h3>
+<p> Date : {{\Carbon\Carbon::parse($motif->created_at)->translatedFormat('d F Y')}}</p>
+@can ('edit-motifs')
+    <a class="btn btn-primary" href="{{ Route('motif.edit',$motif->id)}}">Modifier le motif</a>
+@endcan
+@can('delete-motifs')
+    <form action="{{Route('motif.destroy',$motif->id)}}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button class="btn btn-danger" type="submit" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce motif?')">Supprimer le motif</button>
+    </form>
+@endcan
 
+
+
+<a class="btn btn-secondary" href="{{ Route('motif.index')}}">Retour à la liste des motifs</a>
+@endsection

@@ -24,12 +24,13 @@ class MotifController extends Controller
 
     /**
      * Summary of create
-     * @return View
+     * @return View|RedirectResponse
      */
     public function create()
     {
         $motif = new Motif;
         return view('motif_form',compact('motif'));
+
     }
 
     /**

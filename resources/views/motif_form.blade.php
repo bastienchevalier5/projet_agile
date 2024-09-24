@@ -1,8 +1,7 @@
 @extends('layouts.app')
 @section('title', $motif->exists ? 'Édition de Motif' : 'Création de Motif')
 @section('content')
-<h1>{{ $motif->exists ? 'Édition de motif' : 'Création de motif' }}</h1>
-<a href="{{ route('acceuil') }}">Acceuil</a>
+<h1 class="h1">{{ $motif->exists ? 'Édition de motif' : 'Création de motif' }}</h1>
 <form method="post" action="{{ $motif->exists ? route('motif.update', $motif->id) : route('motif.store') }}" class="mb-3">
     @csrf
     @if($motif->exists)
@@ -35,6 +34,6 @@
         @enderror
     </div>
 
-    <input type="submit" value="{{ $motif->exists ? 'Mettre à jour' : 'Envoyer' }}">
+    <input class="btn btn-secondary" type="submit" value="{{ $motif->exists ? 'Mettre à jour' : 'Envoyer' }}">
 </form>
 @endsection
