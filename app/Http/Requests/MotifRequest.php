@@ -22,7 +22,6 @@ class MotifRequest extends FormRequest
     public function rules(): array
     {
         $rules['Libelle'] = 'required|string|max:10';
-        $rules['is_accessible_salarie'] = 'required|boolean';
 
         return $rules;
     }

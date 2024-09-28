@@ -2,6 +2,15 @@
 @section('title',__('Absences'))
 @section('content')
 <h1 class="h1">{{__('Absences')}}</h1>
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@elseif (session('error'))
+<div class="alert alert-danger">
+    {{ session('error')}}
+</div>
+@endif
 @can ('create-absences')
     <a class="btn btn-primary" href="{{Route('absence.create')}}">@if (Auth::user()->isAn('salarie')) {{__('Absence request')}} @else {{__('Add absence')}} @endif</a>
 @endcan

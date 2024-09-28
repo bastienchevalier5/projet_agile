@@ -23,7 +23,7 @@
         @csrf
         @method('PATCH')
         <button class="btn btn-success" type="submit"
-        onclick="return confirm('{{ __('Are you sure to') . ($absence->statut == 0 ? __('validate') : __('remove')) . __('this absence ?') }}')">
+        onclick="return confirm('{{ __('Are you sure to want to') . ($absence->statut == 0 ? __('validate') : __('remove')) . __('this absence ?') }}')">
         {{ $absence->statut == 0 ? __('Validate') : __('Remove') }} {{__('this absence')}}
     </button>
         </button>

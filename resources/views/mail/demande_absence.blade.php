@@ -1,16 +1,16 @@
 @extends('layouts.app')
-@section('title', 'Demande d\'absence')
+@section('title', __('Absence request'))
 @section('content')
 <div class="panel">
-<h1>Demande d'absence de {{$user->name ?? 'Utilisateur inconnu'}}</h1>
+<h1>{{__('Absence request from')}} {{$user->name}}</h1>
 
 <table>
-    <p>{{$user->name ?? 'Un utilisateur'}} a effectué une demande d'absence</p>
-    <p>Détail :</p>
+    <p>{{$user->name}} {{__('has made an absence request')}}</p>
+    <p>{{__('Detail')}} :</p>
     <ul>
-        <li>Motif : {{$motif->Libelle ?? 'Motif non spécifié'}}</li>
-        <li>Début : {{\Carbon\Carbon::parse($absence->debut)->translatedFormat('d F Y')}}</li>
-        <li>Fin : {{\Carbon\Carbon::parse($absence->fin)->translatedFormat('d F Y')}}</li>
+        <li>{{__('Reason')}} : {{$motif->Libelle}}</li>
+        <li>{{__('Beginning')}} : {{\Carbon\Carbon::parse($absence->debut)->translatedFormat('d F Y')}}</li>
+        <li>{{__('End')}} : {{\Carbon\Carbon::parse($absence->fin)->translatedFormat('d F Y')}}</li>
     </ul>
 </table>
 </div>

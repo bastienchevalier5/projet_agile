@@ -42,16 +42,13 @@ class MotifController extends Controller
      */
     public function store(MotifRequest $request)
     {
-        // Valider les données de la requête
         $validatedData = $request->validate([
             'Libelle' => 'required|string|max:255',
-            'is_accessible_salarie' => 'required|boolean',
         ]);
 
         $motif = Motif::create($validatedData);
 
-        // Rediriger vers la page d'index avec un message de succès
-        return redirect()->route('motif.index')->with('success', 'Motif créé avec succès.');
+        return redirect()->route('motif.index')->with('success', __('Reason created successfully.'));
     }
 
     /**
@@ -86,7 +83,7 @@ class MotifController extends Controller
         $motif->Libelle = $request->Libelle;
         $motif->save();
 
-        return redirect()->route('motif.index');
+        return redirect()->route('motif.index')->with('success',__('Reason modified successfully'));
     }
 
     /**
@@ -98,23 +95,6 @@ class MotifController extends Controller
     {
         $motif->delete();
 
-        return redirect()->route('motif.index');
-    }
-
-    /**
-     * Summary of restore
-     *
-     * @return RedirectResponse
-     */
-    public function restore(Motif $motif)
-    {
-        $motif = Motif::withTrashed()->find($motif);
-        if ($motif) {
-            $motif->restore();
-
-            return redirect()->route('motif.index')->with('success', 'Motif restauré avec succès.');
-        }
-
-        return redirect()->route('motif.index')->with('error', 'Motif non trouvé.');
+        return redirect()->route('motif.index')->with('success',__('Reason deleted successfully'));
     }
 }

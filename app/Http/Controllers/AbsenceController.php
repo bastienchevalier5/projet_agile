@@ -69,7 +69,7 @@ class AbsenceController extends Controller
             Mail::to($admin->email)->send(new MailDemandeAbsence($absence,$absence->user,$absence->motif));
         }
 
-        return redirect()->route('absence.index')->with('success', Auth::user()->isAn('salarie') ? "Un mail a été envoyé aux administrateurs lui indiquant votre demande" : "Absence créée avec succès.");
+        return redirect()->route('absence.index')->with('success', Auth::user()->isAn('salarie') ? __('An email has been sent to the administrators indicating your request') : __('Absence created successfully.'));
     }
 
     /**
@@ -113,7 +113,7 @@ class AbsenceController extends Controller
         ]);
         $absence->update($validate);
 
-        return redirect()->route('absence.index')->with('success', 'Absence modifiée avec succès');
+        return redirect()->route('absence.index')->with('success', __('Absence modified successfully'));
     }
 
     /**
@@ -123,7 +123,7 @@ class AbsenceController extends Controller
     public function validateAbsence(Absence $absence)
     {
         if (Auth::user()->isAn('salarie')) {
-            return redirect()->route('absence.index')->with('error', 'Vous n\'avez pas les droits pour valider cette absence.');
+            return redirect()->route('absence.index')->with('error', __('You don\'t have the rights to validate this absence.'));
         }
         if ($absence->statut === 0) {
             $absence->statut = 1;
@@ -133,7 +133,7 @@ class AbsenceController extends Controller
 
         $absence->save();
 
-        return redirect()->route('absence.index');
+        return redirect()->route('absence.index')->with('success',__('Absence validated successfully'));
     }
 
     /**
@@ -145,6 +145,6 @@ class AbsenceController extends Controller
     {
         $absence->delete();
 
-        return redirect()->route('absence.index')->with('success', 'Absence supprimée avec succès');
+        return redirect()->route('absence.index')->with('success', __('Absence deleted successfully'));
     }
 }

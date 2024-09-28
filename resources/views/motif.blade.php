@@ -2,6 +2,15 @@
 @section('title',__('Reasons'))
 @section('content')
 <h1 class="h1">{{__('Reasons')}}</h1>
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@elseif (session('error'))
+<div class="alert alert-danger">
+    {{ session('error')}}
+</div>
+@endif
 @can ('create-motifs')
     <a class="btn btn-primary" href="{{Route('motif.create')}}">{{__('Add reason')}}</a>
 @endcan

@@ -46,10 +46,9 @@ class UserController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success',__('User created successfully.'));
     }
 
     /**
@@ -82,10 +81,9 @@ class UserController extends Controller
     {
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = Hash::make($request->password);
         $user->save();
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success',__('User modified successfully.'));
     }
 
     /**
@@ -96,6 +94,6 @@ class UserController extends Controller
     {
         $user->delete();
 
-        return redirect()->route('user.index');
+        return redirect()->route('user.index')->with('success',__('User deleted successfully.'));
     }
 }

@@ -37,7 +37,7 @@ class MailDemandeAbsence extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Mail Demande Absence',
+            subject: __('Absence request'),
         );
     }
 
