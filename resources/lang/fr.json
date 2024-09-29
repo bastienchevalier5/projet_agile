@@ -139,7 +139,6 @@
     "An email has been sent to the administrators indicating your request" : "Un mail a été envoyé aux administrateurs lui indiquant votre demande",
     "Absence created successfully." : "Absence créée avec succès.",
     "Absence modified successfully." : "Absence modifiée avec succès.",
-    "You don't have the rights to validate this absence." : "Vous n'avez pas les droits pour valider cette absence.",
     "Absence validated successfuly." : "Absence validée avec succès.",
     "Absence deleted successfully." : "Absence supprimée avec succès.",
     "Reason created successfully." : "Motif créé avec succès.",
@@ -147,5 +146,12 @@
     "Reason deleted successfully." : "Motif supprimé avec succès.",
     "User created successfully." : "Utilisateur créé avec succès.",
     "User modified successfully." : "Utilisateur modifié avec succès.",
-    "User deleted successfully." : "Utilisateur supprimé avec succès."
+    "User deleted successfully." : "Utilisateur supprimé avec succès.",
+    "You don't have the permission to add a reason." : "Vous n'avez pas la permission d'ajouter un motif.",
+    "You don't have the permission to add an absence." : "Vous n'avez pas la permission d'ajouter une absence.",
+    "You don't have the permission to access this absence." : "Vous n'avez pas la permission d'accéder à cette absence.",
+    "You don't have the permission to edit this absence." : "Vous n'avez pas la permission de modifier cette absence.",
+    "You don't have the permission to access this page." : "Vous n'avez pas la permission d'accéder à cette page.",
+    "You don't have the permission to add a user." : "Vous n'avez pas la permission d'ajouter un utilisateur.",
+    "You don't have the permission to edit a user." : "Vous n'avez pas la permission de modifier un utilisateur."
 }

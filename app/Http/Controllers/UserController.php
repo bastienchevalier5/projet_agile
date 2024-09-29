@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Models\User;
+use Auth;
 use Hash;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -15,25 +16,35 @@ class UserController extends Controller
     /**
      * Summary of index
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function index()
     {
-        $users = User::all();
+        if (Auth::user()->isAn('admin')) {
+            $users = User::all();
 
-        return view('user', compact('users'));
+            return view('user', compact('users'));
+        } else {
+            return redirect()->route('accueil')->with('error',__("You don't have the permission to access this page."));
+        }
+
     }
 
     /**
      * Summary of create
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function create()
     {
-        $user = new User();
+        if (Auth::user()->isAn('admin')) {
+            $user = new User();
 
-        return view('user_form', compact('user'));
+            return view('user_form', compact('user'));
+        } else {
+            return redirect()->route('accueil')->with('error',__("You don't have the permission to add a user."));
+        }
+
     }
 
     /**
@@ -54,23 +65,33 @@ class UserController extends Controller
     /**
      * Summary of show
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function show(User $user)
     {
-        return view('detail_user', compact('user'));
+        if (Auth::user()->isAn('admin')) {
+            return view('detail_user', compact('user'));
+        } else {
+            return redirect()->route('accueil')->with('error',__("You don't have the permission to access this page."));
+        }
+
     }
 
     /**
      * Summary of edit
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function edit(User $user)
     {
-        $users = User::all();
+        if (Auth::user()->isAn('admin')) {
+            $users = User::all();
 
-        return view('user_form', compact('user'));
+            return view('user_form', compact('user'));
+        } else {
+            return redirect()->route('accueil')->with('error',__("You don't have the permission to edit a user."));
+        }
+
     }
 
     /**

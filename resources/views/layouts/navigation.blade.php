@@ -5,7 +5,7 @@
             <div class="flex">
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:items-center sm:flex">
                     <x-nav-link :href="route('accueil')" :active="request()->routeIs('accueil')">
                         {{ __('Home') }}
                     </x-nav-link>

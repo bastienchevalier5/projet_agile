@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MotifRequest;
 use App\Models\Motif;
+use Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
@@ -30,9 +31,14 @@ class MotifController extends Controller
      */
     public function create()
     {
-        $motif = new Motif();
+        if (Auth::user()->can('create-motifs')) {
+            $motif = new Motif();
 
-        return view('motif_form', compact('motif'));
+            return view('motif_form', compact('motif'));
+        } else {
+            return redirect()->route('motif.index')->with('error',__("You don't have the permission to add a reason."));
+        }
+
     }
 
     /**
@@ -64,13 +70,18 @@ class MotifController extends Controller
     /**
      * Summary of edit
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function edit(Motif $motif)
     {
-        $motifs = Motif::all();
+        if (Auth::user()->can('edit-motifs')){
+            $motifs = Motif::all();
 
-        return view('motif_form', compact('motif'));
+            return view('motif_form', compact('motif'));
+        } else {
+            return redirect()->route('motif.index')->with('error',__("You don't have the permission to edit a reason"));
+        }
+
     }
 
     /**

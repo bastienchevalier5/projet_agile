@@ -1,15 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Http\Controllers\Controller;
 use App\Http\Requests\AbsenceRequest;
 use App\Mail\MailDemandeAbsence;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
-use Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Policies\AbsencePolicy;
 use Mail;
 use Silber\Bouncer\Bouncer;
 
@@ -38,15 +40,20 @@ class AbsenceController extends Controller
     /**
      * Summary of create
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function create()
     {
-        $absence = new Absence();
-        $motifs = Motif::all();
-        $users = User::all();
+        if (Auth::user()->can('create-absences')) {
+            $absence = new Absence();
+            $motifs = Motif::all();
+            $users = User::all();
 
-        return view('absence_form', compact(['motifs', 'users', 'absence']));
+            return view('absence_form', compact(['motifs', 'users', 'absence']));
+        } else {
+            return redirect()->route('absence.index')->with('error',__("You don't have the permission to add an absence."));
+        }
+
     }
 
     /**
@@ -81,22 +88,31 @@ class AbsenceController extends Controller
     {
         $absence = Absence::with(['user', 'motif'])->find($absence->id);
 
-        return view('detail_absence', compact('absence'));
+        if (Auth::user()->isAn('admin') | (Auth::user()->can('view-absences') && Auth::id() === $absence->user_id)) {
+            return view('detail_absence', compact('absence'));
+        } else {
+            return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this absence."));
+        }
     }
 
     /**
      * Summary of edit
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function edit(Absence $absence)
     {
-        $absences = Absence::all();
-        $motifs = Motif::all();
-        $users = User::all();
+        if (Auth::user()->isAn('admin') | (Auth::user()->can('edit-absences') && Auth::id() === $absence->user_id)) {
+            $absences = Absence::all();
+            $motifs = Motif::all();
+            $users = User::all();
 
-        return view('absence_form', compact(['motifs', 'users', 'absence']));
+            return view('absence_form', compact(['motifs', 'users', 'absence']));
+        } else {
+            return redirect()->route('absence.index')->with('error',__("You don't have the permission to edit this absence."));
+        }
     }
+
 
     /**
      * Summary of update
@@ -122,9 +138,6 @@ class AbsenceController extends Controller
      */
     public function validateAbsence(Absence $absence)
     {
-        if (Auth::user()->isAn('salarie')) {
-            return redirect()->route('absence.index')->with('error', __('You don\'t have the rights to validate this absence.'));
-        }
         if ($absence->statut === 0) {
             $absence->statut = 1;
         } else {
