@@ -1,66 +1,157 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Homestead - Mon Application
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Bienvenue dans mon application Laravel utilisant Homestead. Ce fichier `README.md` contient les informations essentielles pour installer, configurer et lancer ce projet en local avec Homestead.
 
-## About Laravel
+## Prérequis
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Avant de commencer, assurez-vous d'avoir installé les éléments suivants sur votre machine :
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [VirtualBox](https://www.virtualbox.org/)
+- [Vagrant](https://www.vagrantup.com/)
+- [Git](https://git-scm.com/)
+- [Composer](https://getcomposer.org/)
+- [Laravel Homestead](https://laravel.com/docs/11.x/homestead)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
 
-## Learning Laravel
+### 1. Cloner le dépôt
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+cd mon-projet
+git clone https://github.com/bastienchevalier5/cours-laravel.git
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
 
-## Laravel Sponsors
+### 2. Installer les dépendances PHP avec Composer
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Installer Laravel Homestead
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Si Homestead n'est pas déjà installé globalement sur votre machine, exécutez la commande suivante :
 
-## Contributing
+```bash
+vagrant box add laravel/homestead
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Puis, dans votre projet, ajoutez le fichier Homestead en utilisant cette commande :
 
-## Code of Conduct
+```bash
+php vendor/bin/homestead make
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Configuration Homestead
 
-## Security Vulnerabilities
+Ouvrez le fichier `Homestead.yaml` généré et configurez-le selon les besoins de votre projet. Exemple minimal :
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```yaml
+ip: "192.168.10.10"
+memory: 2048
+cpus: 2
+provider: virtualbox
 
-## License
+folders:
+    - map: ~/chemin/vers/mon-projet
+      to: /home/vagrant/code
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+sites:
+    - map: homestead.test
+      to: /home/vagrant/code/public
+
+databases:
+    - homestead
+```
+
+### 5. Ajouter l'entrée DNS locale
+
+Ajoutez l'entrée suivante dans votre fichier `/etc/hosts` :
+
+```bash
+192.168.10.10 homestead.test
+```
+
+### 6. Lancer la machine virtuelle
+
+Démarrez Homestead avec Vagrant :
+
+```bash
+vagrant up
+```
+
+Vous pouvez accéder à la machine virtuelle en utilisant la commande suivante :
+
+```bash
+vagrant ssh
+```
+
+### 7. Créer le fichier `.env`
+
+Copiez le fichier `.env.example` et renommez-le en `.env` :
+
+```bash
+cp .env.example .env
+```
+
+Générez une nouvelle clé d'application Laravel :
+
+```bash
+php artisan key:generate
+```
+
+### 8. Migrer la base de données
+
+Exécutez les migrations de la base de données à l'intérieur de la machine virtuelle :
+
+```bash
+php artisan migrate
+```
+
+## Utilisation
+
+### Accès à l'application
+
+Une fois Homestead démarré, accédez à l'application en ouvrant votre navigateur et en entrant l'URL suivante :
+
+```
+http://homestead.test
+```
+
+### Commandes artisan
+
+Vous pouvez exécuter des commandes artisan à l'intérieur de la machine virtuelle :
+
+```bash
+vagrant ssh
+cd /home/vagrant/code
+php artisan [commande]
+```
+
+## Debugging
+
+### Accéder aux logs
+
+Les logs Laravel sont accessibles dans le répertoire `storage/logs` de votre projet. Si vous avez un problème avec Homestead ou la machine virtuelle, les logs de Vagrant peuvent également être utiles.
+
+### Recharger la configuration Homestead
+
+Si vous modifiez le fichier `Homestead.yaml`, assurez-vous de recharger la machine virtuelle pour appliquer les changements :
+
+```bash
+vagrant reload --provision
+```
+
+## Ressources supplémentaires
+
+- [Documentation Laravel](https://laravel.com/docs)
+- [Documentation Laravel Homestead](https://laravel.com/docs/11.x/homestead)
+
+---
+
+### Auteurs
+
+- **Chevalier Bastien** - *Développeur principal* - [bastienchevalier5](https://github.com/bastienchevalier5)
+
+---
