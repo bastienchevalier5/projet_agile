@@ -24,7 +24,7 @@ Cette application Laravel est conçue pour gérer les absences des utilisateurs.
 
 ```bash
 cd chemin/vers/votre/projet
-git clone https://github.com/bastienchevalier5/cours-laravel.gitt
+git clone https://github.com/bastienchevalier5/cours-laravel.git
 ```
 
 ### 2. Installer les dépendances
