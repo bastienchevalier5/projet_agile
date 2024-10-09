@@ -23,7 +23,7 @@ Cette application Laravel est conçue pour gérer les absences des utilisateurs.
 ### 1. Cloner le Repository
 
 ```bash
-git clone https://github.com/votre-utilisateur/cours-laravel.git
+git clone https://github.com/bastienchevalier5/cours-laravel.git
 cd chemin/vers/votre/projet
 ```
 
