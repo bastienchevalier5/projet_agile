@@ -24,7 +24,7 @@ Cette application Laravel est conçue pour gérer les absences des utilisateurs.
 
 ```bash
 cd chemin/vers/votre/projet
-git clone https://github.com/bastienchevalier5/cours-laravel.git
+git clone https://github.com/bastienchevalier5/cours-laravel.git .
 ```
 
 ### 2. Installer les dépendances
@@ -36,22 +36,58 @@ npm install
 
 ### 3. Configurer l'environnement
 
-Copiez le fichier .env.example en .env et configurez les paramètres de votre environnement, notamment les informations de connexion à la base de données.
+Copiez le fichier .env.example en .env
 
 ```bash
 cp .env.example .env
 ```
+Configurez les paramètres de votre environnement, notamment les informations de connexion à la base de données.
 
-### 4. Exécuter les miigrations
+```php
+// Changer le nom de l'application
+APP_NAME='Gestion des abscences'
+
+// Changer le Timezone de l'application
+APP_TIMEZONE='Europe/Paris'
+
+// Changer l'url de  l'application
+APP_URL=http://localhost
+
+// Changer les informations sur la langue
+APP_LOCALE=fr
+APP_FAKER_LOCALE=fr_FR
+
+// Changer les informations de la base de données
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=homestead
+DB_USERNAME=homestead
+DB_PASSWORD=
+
+// Changer les informations pour les mails
+MAIL_MAILER=smtp
+MAIL_HOST=localhost
+MAIL_PORT=1025
+```
+### 4. Exécuter les migrations
 
 ```bash
 php artisan migrate
 ```
 
-### 5. Compiler les assets Front-End
+### 5. Remplir la base de données avec des informations aléatoires
+
+```bash
+php artisan db:seed
+```
+
+### 6. Compiler les assets Front-End
 
 ```bash
 npm run dev
 ```
 
+### 7. Accéder à l'application
 
+Maintenant, vous devrez pouvoir atteindre l'application en allant sur l'url que vous avez indiqué.
