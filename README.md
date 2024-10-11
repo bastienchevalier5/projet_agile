@@ -76,11 +76,20 @@ MAIL_PORT=1025
 php artisan migrate
 ```
 
-### 5. Remplir la base de données avec des informations aléatoires
+### 5. Remplir la base de données
 
 ```bash
 php artisan db:seed
 ```
+### 6. Logins et mot de passes
+
+Administrateur :
+Email : admin@admin.fr
+Mot de passe : admin
+
+Utilisateur :
+Email : user@user.fr
+Mot de passe : user
 
 ### 6. Compiler les assets Front-End
 
