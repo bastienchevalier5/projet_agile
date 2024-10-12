@@ -10,9 +10,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [AcceuilController::class, 'index'])->name('accueil')->withoutMiddleware('auth');
 
 Route::middleware(['auth', 'langue'])->group(function () {
+    Route::get('/', [AcceuilController::class, 'index'])->name('accueil')->withoutMiddleware('auth');
+
     Route::resource('motif', MotifController::class);
 
     Route::resource('absence', AbsenceController::class);
