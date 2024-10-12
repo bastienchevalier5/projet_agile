@@ -39,7 +39,7 @@ Configurez les paramètres de votre environnement, notamment les informations de
 
 ```php
 // Changer le nom de l'application
-APP_NAME='Gestion des abscences'
+APP_NAME='Gestion des absences'
 
 // Changer le Timezone de l'application
 APP_TIMEZONE='Europe/Paris'
@@ -51,18 +51,14 @@ APP_URL=http://localhost
 APP_LOCALE=fr
 APP_FAKER_LOCALE=fr_FR
 
-// Changer les informations de la base de données
+// Changer les informations pour que cela corresponde à votre base de données
 DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
+DB_HOST=127.0.0.1 ou l'adresse de votre base de données
 DB_PORT=3306
-DB_DATABASE=homestead
-DB_USERNAME=homestead
-DB_PASSWORD=
+DB_DATABASE=nom_de_votre_base_de_donnees
+DB_USERNAME=votre_nom_d'utilisateur
+DB_PASSWORD=votre_mot_de_passe
 
-// Changer les informations pour les mails
-MAIL_MAILER=smtp
-MAIL_HOST=localhost
-MAIL_PORT=1025
 ```
 
 ### 3. Générer la clé de l'application
