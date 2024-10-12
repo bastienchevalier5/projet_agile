@@ -61,19 +61,19 @@ DB_PASSWORD=votre_mot_de_passe
 
 ```
 
-### 3. Générer la clé de l'application
-
-```bash
-php artisan key:generate
-```
-
-### 4. Installer les dépendances
+### 3. Installer les dépendances
 
 ```bash
 composer install
 npm install
 npm run build
 npm run dev
+```
+
+### 4. Générer la clé de l'application
+
+```bash
+php artisan key:generate
 ```
 
 ### 5. Exécuter les migrations
