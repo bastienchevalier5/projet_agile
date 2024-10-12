@@ -27,14 +27,8 @@ cd chemin/vers/votre/projet
 git clone https://github.com/bastienchevalier5/cours-laravel.git .
 ```
 
-### 2. Installer les dépendances
 
-```bash
-composer install
-npm install
-```
-
-### 3. Configurer l'environnement
+### 2. Configurer l'environnement
 
 Copiez le fichier .env.example en .env
 
@@ -70,20 +64,36 @@ MAIL_MAILER=smtp
 MAIL_HOST=localhost
 MAIL_PORT=1025
 ```
-### 4. Exécuter les migrations
+
+### 3. Générer la clé de l'application
+
+```bash
+php artisan key:generate
+```
+
+### 4. Installer les dépendances
+
+```bash
+composer install
+npm install
+npm run build
+npm run dev
+```
+
+### 5. Exécuter les migrations
 
 ```bash
 php artisan migrate
 ```
 
-### 5. Remplir la base de données
+### 6. Remplir la base de données
 
 ```bash
 php artisan db:seed
 ```
-### 6. Logins et mot de passes
+### 7. Logins et mot de passes
 
-Administrateur :
+Administrateur : 
 Email : admin@admin.fr
 Mot de passe : admin
 
@@ -91,12 +101,7 @@ Utilisateur :
 Email : user@user.fr
 Mot de passe : user
 
-### 6. Compiler les assets Front-End
 
-```bash
-npm run dev
-```
-
-### 7. Accéder à l'application
+### 8. Accéder à l'application
 
 Maintenant, vous devrez pouvoir atteindre l'application en allant sur l'url que vous avez indiqué.
