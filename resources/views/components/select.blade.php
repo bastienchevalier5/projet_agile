@@ -1,6 +1,6 @@
 @props(['label', 'name', 'options', 'selected' => null])
 
-<div>
+<div class="m-5">
     <label for="{{ $name }}">{{ $label }}</label>
     <select name="{{ $name }}" id="{{ $name }}">
         @foreach($options as $key => $option)

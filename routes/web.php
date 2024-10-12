@@ -10,9 +10,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['auth','langue'])->group(function () {
-    Route::get('/', [AcceuilController::class, 'index'])->name('accueil');
+Route::get('/', [AcceuilController::class, 'index'])->name('accueil')->withoutMiddleware('auth');
 
+Route::middleware(['auth', 'langue'])->group(function () {
     Route::resource('motif', MotifController::class);
 
     Route::resource('absence', AbsenceController::class);
@@ -20,10 +20,6 @@ Route::middleware(['auth','langue'])->group(function () {
     Route::patch('absence/{absence}/validate', [AbsenceController::class, 'validateAbsence'])->name('absence.validate');
 
     Route::resource('user', UserController::class);
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['verified'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

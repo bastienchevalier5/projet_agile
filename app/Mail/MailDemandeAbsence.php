@@ -6,7 +6,6 @@ use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -15,10 +14,26 @@ use Illuminate\Queue\SerializesModels;
 class MailDemandeAbsence extends Mailable
 {
     use Queueable, SerializesModels;
+
+    /**
+     * Summary of absence
+     *
+     * @var Absence
+     */
     public $absence;
 
+    /**
+     * Summary of user
+     *
+     * @var User
+     */
     public $user;
 
+    /**
+     * Summary of motif
+     *
+     * @var Motif
+     */
     public $motif;
 
     /**

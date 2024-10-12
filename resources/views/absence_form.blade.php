@@ -3,6 +3,7 @@
 @section('title', $absence->exists ? __('Edit absence') : __('Add absence'))
 
 @section('content')
+<x-back-button url="{{$absence->exists ? route('absence.show',$absence->id) : route('absence.index')}}"/>
 <h1 class="h1">
     @if(Auth::user()->isAn('salarie'))
         {{ __('Absence request') }}
@@ -22,6 +23,12 @@
     @if (Auth::user()->isAn('admin'))
         <x-select label="{{ __('User concerned') }} : " name="user_id" :options="$users->pluck('name', 'id')" :selected="$absence->user_id" />
     @endif
+
+    <div class="mt-3">
+        <x-button type="submit" color="secondary" actionType="{{$absence->exists ? 'modify' : 'add'}}" entityType="absence">
+            {{ __($absence->exists ? 'Update' : 'Submit') }}
+        </x-primary-button>
+    </div>
 
 </x-form>
 @endsection

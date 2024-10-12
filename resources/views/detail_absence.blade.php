@@ -6,7 +6,8 @@
         {{ session('error') }}
     </div>
 @endif
-<h1 class="h1">{{__('Absence of ')}} {{$absence->user->name}}</h1>
+<x-back-button url="{{route('absence.index')}}"/>
+    <h1 class="h1">{{__('Absence of ')}} {{$absence->user->name}}</h1>
 <h4>{{__('Reason').' : '.$absence->motif->Libelle}}</h4>
 <p>{{__('Beginning').' : '.\Carbon\Carbon::parse($absence->debut)->translatedFormat('d F Y')}}</p>
 <p>{{__('End').' : '.\Carbon\Carbon::parse($absence->fin)->translatedFormat('d F Y')}}</p>
@@ -15,17 +16,16 @@
 @endif
 @can ('edit-absences')
     @if ($absence->statut == 0)
-        <a class="btn btn-primary" href="{{ Route('absence.edit',$absence->id)}}">{{__('Edit absence')}}</a>
+        <a class="btn btn-primary m-3" href="{{ Route('absence.edit',$absence->id)}}">{{__('Edit absence')}}</a>
     @endif
 @endcan
 @if (Auth::user()->isAn('admin'))
     <form action="{{ route('absence.validate', $absence->id) }}" method="POST">
         @csrf
         @method('PATCH')
-        <button class="btn btn-success" type="submit"
-        onclick="return confirm('{{ __('Are you sure to want to') . ($absence->statut == 0 ? __('validate') : __('remove')) . __('this absence ?') }}')">
-        {{ $absence->statut == 0 ? __('Validate') : __('Remove') }} {{__('this absence')}}
-    </button>
+        <button class="btn btn-success m-3" type="submit"
+        onclick="return confirm('{{ __('Are you sure to want to') . ($absence->statut == 0 ? __(' validate') : __(' remove')) . __(' this absence ?') }}')">
+        {{ $absence->statut == 0 ? __('Validate') : __('Remove') }} {{__(' this absence')}}
         </button>
         </form>
 @endif
@@ -34,8 +34,7 @@
     <form action="{{Route('absence.destroy',$absence->id)}}" method="POST">
         @csrf
         @method('DELETE')
-        <button class="btn btn-danger" type="submit" onclick="return confirm({{__('Are you sure to want to delete this absence')}})">{{__('Delete absence')}}</button>
+        <button class="btn btn-danger m-3" type="submit" onclick="return confirm('{{__('Are you sure to want to delete this absence')}}')">{{__('Delete absence')}}</button>
     </form>
 @endcan
-<a class="btn btn-secondary" href="{{ Route('absence.index')}}">{{__('Back to the absences list')}}</a>
 @endsection

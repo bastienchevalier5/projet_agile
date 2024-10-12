@@ -1,29 +1,24 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
+@section('title',__('Profile'))
+@section('content')
+@if (session('success'))
+<div class="alert alert-success">
+    {{ session('success') }}
+</div>
+@elseif (session('error'))
+<div class="alert alert-danger">
+    {{ session('error')}}
+</div>
+@endif
+<x-back-button url="{{route('accueil')}}"/>
+<h1 class="h1 text-center m-5">{{ __('Profile') }}</h1>
+<div class="card bg-dark-subtle w-50 mx-auto">
+    <x-form method="patch" action="{{ route('profile.update') }}" submitText="{{__('Update')}}">
+        <h2 class="h3 m-5">Modifier mes informations</h2>
+        <x-input label="{{ __('Name') }} : " name="name" type="text" :value="old('name',$user->name)" />
+        <x-input label="{{ __('Email')}} : " name="email" type="email" :value="old('email',$user->email)" />
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+    </x-form>
+</div>
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
-
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@endsection

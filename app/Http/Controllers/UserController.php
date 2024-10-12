@@ -4,15 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\UserRepository;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Auth;
-use Hash;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
+    /**
+     * Summary of repository
+     *
+     * @var UserRepository
+     */
+    private $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Summary of index
      *
@@ -20,14 +32,15 @@ class UserController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->isAn('admin')) {
+        $user = Auth::user();
+
+        if ($user && $user->isAn('admin')) {
             $users = User::all();
 
-            return view('user', compact('users'));
-        } else {
-            return redirect()->route('accueil')->with('error',__("You don't have the permission to access this page."));
+            return view('lists', compact('users'));
         }
 
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to access this page."));
     }
 
     /**
@@ -37,14 +50,15 @@ class UserController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->isAn('admin')) {
+        $user = Auth::user();
+
+        if ($user && $user->isAn('admin')) {
             $user = new User();
 
             return view('user_form', compact('user'));
-        } else {
-            return redirect()->route('accueil')->with('error',__("You don't have the permission to add a user."));
         }
 
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to add a user."));
     }
 
     /**
@@ -54,12 +68,9 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-        ]);
+        $user = $this->repository->store($request->all());
 
-        return redirect()->route('user.index')->with('success',__('User created successfully.'));
+        return redirect()->route('user.index')->with('success', __('User created successfully.'));
     }
 
     /**
@@ -69,12 +80,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        if (Auth::user()->isAn('admin')) {
+        $authUser = Auth::user();
+
+        if ($authUser && $authUser->isAn('admin')) {
             return view('detail_user', compact('user'));
-        } else {
-            return redirect()->route('accueil')->with('error',__("You don't have the permission to access this page."));
         }
 
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to access this page."));
     }
 
     /**
@@ -84,37 +96,38 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        if (Auth::user()->isAn('admin')) {
+        $authUser = Auth::user();
+
+        if ($authUser && $authUser->isAn('admin')) {
             $users = User::all();
 
             return view('user_form', compact('user'));
-        } else {
-            return redirect()->route('accueil')->with('error',__("You don't have the permission to edit a user."));
         }
 
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to edit a user."));
     }
 
     /**
      * Summary of update
+     *
      * @return mixed|RedirectResponse
      */
     public function update(UserRequest $request, User $user)
     {
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->save();
+        $this->repository->update($user, $request->all());
 
-        return redirect()->route('user.index')->with('success',__('User modified successfully.'));
+        return redirect()->route('user.index')->with('success', __('User modified successfully.'));
     }
 
     /**
      * Summary of destroy
+     *
      * @return mixed|RedirectResponse
      */
     public function destroy(User $user)
     {
         $user->delete();
 
-        return redirect()->route('user.index')->with('success',__('User deleted successfully.'));
+        return redirect()->route('user.index')->with('success', __('User deleted successfully.'));
     }
 }

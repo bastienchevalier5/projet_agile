@@ -8,8 +8,4 @@
     @endif
 
     {{ $slot }}
-
-    <div class="mt-3">
-        <x-button>{{ $submitText }}</x-button>
-    </div>
 </form>

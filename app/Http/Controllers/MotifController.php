@@ -4,24 +4,46 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Repositories\MotifRepository;
 use App\Http\Requests\MotifRequest;
 use App\Models\Motif;
 use Auth;
+use Cache;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class MotifController extends Controller
 {
     /**
+     * Summary of repository
+     *
+     * @var MotifRepository
+     */
+    private $repository;
+
+    public function __construct(MotifRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
      * Summary of index
      *
-     * @return View
+     * @return View|RedirectResponse
      */
     public function index()
     {
-        $motifs = Motif::all();
+        $user = Auth::user();
 
-        return view('motif', compact('motifs'));
+        if ($user && $user->isAn('admin')) {
+            $motifs = Cache::remember('motifs', 3600, function () {
+                return Motif::all();
+            });
+
+            return view('lists', compact('motifs'));
+        }
+
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to access this page."));
     }
 
     /**
@@ -31,14 +53,15 @@ class MotifController extends Controller
      */
     public function create()
     {
-        if (Auth::user()->can('create-motifs')) {
+        $user = Auth::user();
+
+        if ($user && $user->isAn('admin')) {
             $motif = new Motif();
 
             return view('motif_form', compact('motif'));
-        } else {
-            return redirect()->route('motif.index')->with('error',__("You don't have the permission to add a reason."));
         }
 
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to add a reason."));
     }
 
     /**
@@ -48,11 +71,7 @@ class MotifController extends Controller
      */
     public function store(MotifRequest $request)
     {
-        $validatedData = $request->validate([
-            'Libelle' => 'required|string|max:255',
-        ]);
-
-        $motif = Motif::create($validatedData);
+        $motif = $this->repository->store($request->all());
 
         return redirect()->route('motif.index')->with('success', __('Reason created successfully.'));
     }
@@ -60,11 +79,17 @@ class MotifController extends Controller
     /**
      * Summary of show
      *
-     * @return View
+     * @return View | RedirectResponse
      */
     public function show(Motif $motif)
     {
-        return view('detail_motif', compact('motif'));
+        $user = Auth::user();
+
+        if ($user && $user->isAn('admin')) {
+            return view('detail_motif', compact('motif'));
+        }
+
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to access this page."));
     }
 
     /**
@@ -74,14 +99,13 @@ class MotifController extends Controller
      */
     public function edit(Motif $motif)
     {
-        if (Auth::user()->can('edit-motifs')){
-            $motifs = Motif::all();
+        $user = Auth::user();
 
+        if ($user && $user->can('edit-motifs')) {
             return view('motif_form', compact('motif'));
-        } else {
-            return redirect()->route('motif.index')->with('error',__("You don't have the permission to edit a reason"));
         }
 
+        return redirect()->route('accueil')->with('error', __("You don't have the permission to edit a reason."));
     }
 
     /**
@@ -91,10 +115,9 @@ class MotifController extends Controller
      */
     public function update(MotifRequest $request, Motif $motif)
     {
-        $motif->Libelle = $request->Libelle;
-        $motif->save();
+        $this->repository->update($motif, $request->all());
 
-        return redirect()->route('motif.index')->with('success',__('Reason modified successfully'));
+        return redirect()->route('motif.index')->with('success', __('Reason modified successfully.'));
     }
 
     /**
@@ -104,8 +127,15 @@ class MotifController extends Controller
      */
     public function destroy(Motif $motif)
     {
-        $motif->delete();
+        $user = Auth::user();
 
-        return redirect()->route('motif.index')->with('success',__('Reason deleted successfully'));
+        if ($user && $user->isAn('admin')) {
+            Cache::forget('motifs');
+            $motif->delete();
+
+            return redirect()->route('motif.index')->with('success', __('Reason deleted successfully.'));
+        }
+
+        return redirect()->route('motif.index')->with('error', __("You don't have the permission to delete this reason."));
     }
 }

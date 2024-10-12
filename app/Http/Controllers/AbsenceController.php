@@ -1,163 +1,161 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Http\Controllers\Controller;
+
+use App\Http\Repositories\AbsenceRepository;
 use App\Http\Requests\AbsenceRequest;
-use App\Mail\MailDemandeAbsence;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Policies\AbsencePolicy;
-use Mail;
-use Silber\Bouncer\Bouncer;
 
 class AbsenceController extends Controller
 {
-    /**
-     * Summary of index
-     *
-     * @return View
-     */
-    public function index()
-    {
-        if (Auth::user()->isAn('admin')) {
-            $absences = Absence::with('user', 'motif')->get();
-        }
-        elseif (Auth::user()->isAn('salarie')) {
-            $absences = Absence::with('motif')->where('user_id', auth()->id())->get();
-        }
-        else {
-            return view('absence');
-        }
+    private AbsenceRepository $repository;
 
-        return view('absence', compact('absences'));
+    public function __construct(AbsenceRepository $repository)
+    {
+        $this->repository = $repository;
     }
 
-    /**
-     * Summary of create
-     *
-     * @return View | RedirectResponse
-     */
-    public function create()
+    public function index(): View|RedirectResponse
     {
-        if (Auth::user()->can('create-absences')) {
+        $user = Auth::user();
+
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin')) {
+            $absences = Absence::all();
+        } else {
+            $absences = Absence::all()->where('user_id', $user->id);
+        }
+
+        return view('lists', compact('absences'));
+    }
+
+    public function create(): View|RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->can('create-absences')) {
             $absence = new Absence();
             $motifs = Motif::all();
             $users = User::all();
 
             return view('absence_form', compact(['motifs', 'users', 'absence']));
-        } else {
-            return redirect()->route('absence.index')->with('error',__("You don't have the permission to add an absence."));
         }
 
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to add an absence."));
     }
 
-    /**
-     * Summary of store
-     *
-     * @return RedirectResponse
-     */
-    public function store(AbsenceRequest $request)
+    public function store(AbsenceRequest $request): RedirectResponse
     {
-        $absence = Absence::create([
-            'debut' => $request->debut,
-            'fin' => $request->fin,
-            'motif_id' => $request->motif_id,
-            'user_id' => auth()->user()->isAn('salarie') ? auth()->id() : $request->user_id,
-        ]);
+        $user = Auth::user();
 
-        $admins = User::whereIs('admin')->get();
-
-        foreach ($admins as $admin) {
-            Mail::to($admin->email)->send(new MailDemandeAbsence($absence,$absence->user,$absence->motif));
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
         }
 
-        return redirect()->route('absence.index')->with('success', Auth::user()->isAn('salarie') ? __('An email has been sent to the administrators indicating your request') : __('Absence created successfully.'));
+        $absence = $this->repository->store($request->validated(), $user);
+        $this->repository->notifyAdmins($absence);
+
+        return redirect()->route('absence.index')->with('success', $user->isAn('salarie') ? __('An email has been sent to the administrators indicating your request') : __('Absence created successfully.'));
     }
 
-    /**
-     * Summary of show
-     *
-     * @return RedirectResponse|View
-     */
-    public function show(Absence $absence)
+    public function show(Absence $absence): RedirectResponse|View
     {
-        $absence = Absence::with(['user', 'motif'])->find($absence->id);
+        $absence->load(['user', 'motif']); // Chargement des relations
+        $user = Auth::user();
 
-        if (Auth::user()->isAn('admin') | (Auth::user()->can('view-absences') && Auth::id() === $absence->user_id)) {
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin') || ($user->can('view-absences') && $user->id === $absence->user_id)) {
             return view('detail_absence', compact('absence'));
-        } else {
-            return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this absence."));
         }
+
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this absence."));
     }
 
-    /**
-     * Summary of edit
-     *
-     * @return View | RedirectResponse
-     */
-    public function edit(Absence $absence)
+    public function edit(Absence $absence): View|RedirectResponse
     {
-        if (Auth::user()->isAn('admin') | (Auth::user()->can('edit-absences') && Auth::id() === $absence->user_id)) {
-            $absences = Absence::all();
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin') || ($user->can('edit-absences') && $user->id === $absence->user_id)) {
             $motifs = Motif::all();
             $users = User::all();
 
             return view('absence_form', compact(['motifs', 'users', 'absence']));
-        } else {
-            return redirect()->route('absence.index')->with('error',__("You don't have the permission to edit this absence."));
-        }
-    }
-
-
-    /**
-     * Summary of update
-     *
-     * @return RedirectResponse
-     */
-    public function update(AbsenceRequest $request, Absence $absence)
-    {
-        $validate = $request->validate([
-            'debut' => 'required|date',
-            'fin' => 'required|date',
-            'motif_id' => 'required|exists:motifs,id',
-            'user_id' => 'required|exists:users,id',
-        ]);
-        $absence->update($validate);
-
-        return redirect()->route('absence.index')->with('success', __('Absence modified successfully'));
-    }
-
-    /**
-     * Summary of validateAbsence
-     * @return mixed|RedirectResponse
-     */
-    public function validateAbsence(Absence $absence)
-    {
-        if ($absence->statut === 0) {
-            $absence->statut = 1;
-        } else {
-            $absence->statut = 0;
         }
 
-        $absence->save();
-
-        return redirect()->route('absence.index')->with('success',__('Absence validated successfully'));
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to edit this absence."));
     }
 
-    /**
-     * Summary of destroy
-     *
-     * @return RedirectResponse
-     */
-    public function destroy(Absence $absence)
+    public function update(AbsenceRequest $request, Absence $absence): RedirectResponse
     {
-        $absence->delete();
+        $user = Auth::user();
 
-        return redirect()->route('absence.index')->with('success', __('Absence deleted successfully'));
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        $this->repository->update($absence, $request->validated(), $user);
+
+        return redirect()->route('absence.index')->with('success', __('Absence modified successfully.'));
+    }
+
+    public function validateAbsence(Absence $absence): RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin')) {
+            $absence->statut = $absence->statut === 0 ? 1 : 0;
+            $absence->save();
+
+            return redirect()->route('absence.index')->with('success', __('Absence '.($absence->statut === 0 ? 'removed' : 'validated').' successfully.'));
+        }
+
+        return redirect()->route('absence.index')->with('error', "You don't have the permission to validate this absence.");
+    }
+
+    public function destroy(Absence $absence): RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin') || $user->id === $absence->user_id) {
+            $absence->delete();
+
+            return redirect()->route('absence.index')->with('success', __('Absence deleted successfully.'));
+        }
+
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to delete this absence."));
     }
 }

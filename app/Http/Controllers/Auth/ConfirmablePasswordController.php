@@ -24,8 +24,16 @@ class ConfirmablePasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $user = $request->user();
+
+        // Vérifiez si l'utilisateur est authentifié
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        // Validation du mot de passe
         if (! Auth::guard('web')->validate([
-            'email' => $request->user()->email,
+            'email' => $user->email,
             'password' => $request->password,
         ])) {
             throw ValidationException::withMessages([
@@ -33,8 +41,9 @@ class ConfirmablePasswordController extends Controller
             ]);
         }
 
+        // Enregistrement de la session de confirmation du mot de passe
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('accueil', absolute: false));
     }
 }
