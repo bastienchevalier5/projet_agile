@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::middleware(['auth', 'langue'])->group(function () {
-    Route::get('/', [AcceuilController::class, 'index'])->name('accueil')->withoutMiddleware('auth');
+    Route::get('/', [AcceuilController::class, 'index'])->name('accueil');
 
     Route::resource('motif', MotifController::class);
 
