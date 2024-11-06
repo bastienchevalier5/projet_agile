@@ -42,6 +42,23 @@ class UserSeeder extends Seeder
         Bouncer::allow('admin')->to('create-users');
         Bouncer::allow('admin')->to('edit-users');
         Bouncer::allow('admin')->to('delete-users');
+        $rh = new User;
+        $rh->name = 'RH';
+        $rh->email = 'rh@rh.fr';
+        $rh->password = Hash::make('rh');
+        $rh->save();
+        Bouncer::assign('RH')->to($rh);
+        Bouncer::allow('RH')->to('view-users');
+        Bouncer::allow('RH')->to('edit-users');
+        Bouncer::allow('RH')->to('create-users');
+        Bouncer::allow('RH')->to('delete-users');
+        $responsable = new User;
+        $responsable->name = 'responsable';
+        $responsable->email = 'responsable@responsable.fr';
+        $responsable->password = Hash::make('responsable');
+        $responsable->save();
+        Bouncer::assign('responsable')->to($responsable);
+        Bouncer::allow('responsable')->to('view-planning-users');
         User::factory(10)
             ->create();
     }
