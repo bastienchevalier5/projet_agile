@@ -18,6 +18,11 @@ class UserSeeder extends Seeder
         $user->name = 'user';
         $user->email = 'user@user.fr';
         $user->password = Hash::make('user');
+        $user->poste = 'Random';
+        $user->service = 'Lambda';
+        $user->age = 25;
+        $user->date_embauche = now();
+        $user->duree_anciennete = 5;
         $user->save();
         Bouncer::assign('salarie')->to($user);
         Bouncer::allow('salarie')->to('view-absences');
@@ -28,6 +33,11 @@ class UserSeeder extends Seeder
         $rh->name = 'RH';
         $rh->email = 'rh@rh.fr';
         $rh->password = Hash::make('rh');
+        $rh->poste = 'RH';
+        $rh->service = 'RH';
+        $rh->age = 35;
+        $rh->date_embauche = now();
+        $rh->duree_anciennete = 10;
         $rh->save();
         Bouncer::assign('rh')->to($rh);
         Bouncer::allow('rh')->to('view-motifs');
@@ -46,6 +56,11 @@ class UserSeeder extends Seeder
         $responsable->name = 'responsable';
         $responsable->email = 'responsable@responsable.fr';
         $responsable->password = Hash::make('responsable');
+        $responsable->poste = 'Responsable';
+        $responsable->service = 'Responsable';
+        $responsable->age = 30;
+        $responsable->date_embauche = now();
+        $responsable->duree_anciennete = 7;
         $responsable->save();
         Bouncer::assign('responsable')->to($responsable);
         Bouncer::allow('responsable')->to('view-planning-users');

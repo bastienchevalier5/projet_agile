@@ -5,6 +5,8 @@
     <h1 class="h1">{{__('Informations on').' '.$user->name}}</h1>
 <p>{{__('Name').' : '.$user->name}}</p>
 <p>{{__('Email').' : '.$user->email}}</p>
+<p>{{__('Service').' : '.$user->service}}</p>
+<p>{{__('Job').' : '.$user->poste}}</p>
 <p>{{ __('Administrator') . ' : ' . ($user->isAn('admin') ? __('Yes') : __('No')) }}</p>
 @can ('edit-users')
     <a class="btn btn-primary m-3" href="{{ Route('user.edit',$user->id)}}">{{__('Edit user')}}</a>
