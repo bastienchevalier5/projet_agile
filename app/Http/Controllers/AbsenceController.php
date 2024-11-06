@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Repositories\AbsenceRepository;
 use App\Http\Requests\AbsenceRequest;
+use App\Mail\MailAbsenceRefusee;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class AbsenceController extends Controller
 {
@@ -150,12 +152,14 @@ class AbsenceController extends Controller
             return redirect()->route('login');
         }
 
-        if ($user->isAn('admin') || $user->id === $absence->user_id) {
+        if ($user->isAn('admin')) {
             $absence->delete();
-
-            return redirect()->route('absence.index')->with('success', __('Absence deleted successfully.'));
+            $absenceUser = $absence->user;
+            $absenceMotif = $absence->motif;
+            Mail::to($absenceUser->email)->send(new MailAbsenceRefusee($absence,$user,$absenceMotif));
+            return redirect()->route('absence.index')->with('success', __('Absence refused successfully.'));
         }
 
-        return redirect()->route('absence.index')->with('error', __("You don't have the permission to delete this absence."));
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to refuse this absence."));
     }
 }

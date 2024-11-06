@@ -109,6 +109,7 @@
     "User concerned" : "Utilisateur concerné",
     "Absence request from" : "Demande d'absence de",
     "has made an absence request" : "a effectué une demande d'absence",
+    "has refused your absence request." : "a refusé votre demande d'absence.",
     "Absence detail of" : "Détail de l'absence de",
     "Absence of " : "Absence de ",
     "Your absence has been validated" : "Votre absence a été validée",
@@ -145,7 +146,7 @@
     "Absence modified successfully." : "Absence modifiée avec succès.",
     "Absence validated successfully." : "Absence validée avec succès.",
     "Absence removed successfully." : "Absence retirée avec succès",
-    "Absence deleted successfully." : "Absence supprimée avec succès.",
+    "Absence refused successfully." : "Absence refusée avec succès.",
     "Reason created successfully." : "Motif créé avec succès.",
     "Reason modified successfully." : "Motif modifié avec succès.",
     "Reason deleted successfully." : "Motif supprimé avec succès.",
@@ -158,7 +159,7 @@
     "You don't have the permission to add an absence." : "Vous n'avez pas la permission d'ajouter une absence.",
     "You don't have the permission to access this absence." : "Vous n'avez pas la permission d'accéder à cette absence.",
     "You don't have the permission to edit this absence." : "Vous n'avez pas la permission de modifier cette absence.",
-    "You don't have the permission to delete this absence." : "Vous n'avez pas la permission de supprimer cette absence",
+    "You don't have the permission to refuse this absence." : "Vous n'avez pas la permission de refuser cette absence",
     "You don't have the permission to validate this  absence." : "Vous n'avez pas la permission de valider cette absence.",
     "You don't have the permission to access this page." : "Vous n'avez pas la permission d'accéder à cette page.",
     "You don't have the permission to add a user." : "Vous n'avez pas la permission d'ajouter un utilisateur.",
@@ -175,5 +176,7 @@
     "Is the user an administrator?" : "Est-ce que l'utilisateur est administrateur?",
     "Users List" : "Liste des utilisateurs",
     "Reasons List" : "Liste des motifs",
-    "Absences List" : "Liste des absences"
+    "Absences List" : "Liste des absences",
+    "Your absence was refused" : "Votre absence a été refusée",
+    "An email has been sent to the user indicating your refusal." : "Un email a été envoyé à l'utilisateur lui indiquant votre refus."
 }
