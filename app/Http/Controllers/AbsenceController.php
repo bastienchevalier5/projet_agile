@@ -158,4 +158,21 @@ class AbsenceController extends Controller
 
         return redirect()->route('absence.index')->with('error', __("You don't have the permission to delete this absence."));
     }
+    public function userPlanning(User $user): View|RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin') || $user->id === $user->id) {
+            $absences = Absence::all()->where('user_id', $user->id);
+
+            return view('absence.planning', compact('absences'));
+        }
+
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this planning."));
+    }
 }
