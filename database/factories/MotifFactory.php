@@ -16,8 +16,32 @@ class MotifFactory extends Factory
      */
     public function definition(): array
     {
+        // Liste de motifs d'absence
+        $motifs = [
+            'Maladie',
+            'Congé personnel',
+            'Vacances',
+            'Accident',
+            'Obligations familiales',
+            'Congé de maternité/paternité',
+            'Formation',
+            'Mission professionnelle',
+            'Congé sans solde',
+            'Grève',
+            'Congé sabbatique',
+            'Service militaire',
+            'Récupération',
+            'Absence injustifiée',
+            'Jour férié',
+            'Déménagement',
+            'Entretien médical',
+            'Travaux domestiques',
+            'Confinement sanitaire',
+            'Participation à un évènement'
+        ];
+
         return [
-            'Libelle' => fake()->realText(maxNbChars: 10),
+            'Libelle' => fake()->randomElement($motifs),
         ];
     }
 }
