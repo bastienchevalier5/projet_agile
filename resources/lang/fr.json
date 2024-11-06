@@ -110,6 +110,7 @@
     "Absence request from" : "Demande d'absence de",
     "has made an absence request" : "a effectué une demande d'absence",
     "has refused your absence request." : "a refusé votre demande d'absence.",
+    "has validated your absence request." : "a validé votre demande d'absence.",
     "Absence detail of" : "Détail de l'absence de",
     "Absence of " : "Absence de ",
     "Your absence has been validated" : "Votre absence a été validée",
@@ -178,5 +179,6 @@
     "Reasons List" : "Liste des motifs",
     "Absences List" : "Liste des absences",
     "Your absence was refused" : "Votre absence a été refusée",
+    "Your absence was validated" : "Votre absence a été validée",
     "An email has been sent to the user indicating your refusal." : "Un email a été envoyé à l'utilisateur lui indiquant votre refus."
 }

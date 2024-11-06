@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Repositories\AbsenceRepository;
 use App\Http\Requests\AbsenceRequest;
 use App\Mail\MailAbsenceRefusee;
+use App\Mail\MailAbsenceValidee;
 use App\Models\Absence;
 use App\Models\Motif;
 use App\Models\User;
@@ -136,7 +137,11 @@ class AbsenceController extends Controller
         if ($user->isAn('admin')) {
             $absence->statut = $absence->statut === 0 ? 1 : 0;
             $absence->save();
-
+            if ($absence->statut === 1) {
+                $absenceUser = $absence->user;
+                $absenceMotif = $absence->motif;
+                Mail::to($absenceUser->email)->send(new MailAbsenceValidee($absence,$user,$absenceMotif));
+            }
             return redirect()->route('absence.index')->with('success', __('Absence '.($absence->statut === 0 ? 'removed' : 'validated').' successfully.'));
         }
 
@@ -157,7 +162,7 @@ class AbsenceController extends Controller
             $absenceUser = $absence->user;
             $absenceMotif = $absence->motif;
             Mail::to($absenceUser->email)->send(new MailAbsenceRefusee($absence,$user,$absenceMotif));
-            return redirect()->route('absence.index')->with('success', __('Absence refused successfully.'));
+            return redirect()->route('absence.index')->with('success', __('An email has been sent to the user indicating your refusal.'));
         }
 
         return redirect()->route('absence.index')->with('error', __("You don't have the permission to refuse this absence."));
