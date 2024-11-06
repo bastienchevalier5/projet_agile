@@ -135,7 +135,7 @@ class AbsenceController extends Controller
             $absence->statut = $absence->statut === 0 ? 1 : 0;
             $absence->save();
 
-            return redirect()->route('absence.index')->with('success', __('Absence '.($absence->statut === 0 ? 'removed' : 'validated').' successfully.'));
+            return redirect()->route('absence.index')->with('success', __('Absence ' . ($absence->statut === 0 ? 'removed' : 'validated') . ' successfully.'));
         }
 
         return redirect()->route('absence.index')->with('error', "You don't have the permission to validate this absence.");
@@ -168,9 +168,21 @@ class AbsenceController extends Controller
         }
 
         if ($user->isAn('admin') || $user->id === $user->id) {
-            $absences = Absence::all()->where('user_id', $user->id);
+            $events = Auth::user()->absences;
+            $calendarEvents = [];
 
-            return view('absence.planning', compact('absences'));
+            foreach ($events as $event) {
+                $event->statut === 1 ? $color = '#28a745' : $color = '#dc3545'; // Couleur de l'événement
+
+                $calendarEvents[] = [
+                    'title' => $event->motif->Libelle,
+                    'start' => $event->debut,
+                    'end' => $event->fin,
+                    'backgroundColor'=> $color,
+                ];
+            }
+            // dd($calendarEvents);
+            return view('absence.planning', compact('calendarEvents'));
         }
 
         return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this planning."));
