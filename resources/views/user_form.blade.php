@@ -9,6 +9,12 @@
 
     <x-input label="{{ __('Email') }} : " name="email" type="email" :value="old('email', $user->email)" />
 
+    <x-input label="{{__('Age')}} : " name="age" type="number" :value="old('age', $user->age)" />
+
+    <x-input label="{{__('Job')}} : " name="poste" type="text" :value="old('poste', $user->poste)" />
+
+    <x-input label="{{__('Service')}} : " name="service" type="text" :value="old('service', $user->service)" />
+
     <div class="mt-4">
         <label>{{ __('Is the user an administrator?') }}</label>
         <div>

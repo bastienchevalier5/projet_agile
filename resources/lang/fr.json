@@ -180,5 +180,6 @@
     "Absences List" : "Liste des absences",
     "Your absence was refused" : "Votre absence a été refusée",
     "Your absence was validated" : "Votre absence a été validée",
-    "An email has been sent to the user indicating your refusal." : "Un email a été envoyé à l'utilisateur lui indiquant votre refus."
+    "An email has been sent to the user indicating your refusal." : "Un email a été envoyé à l'utilisateur lui indiquant votre refus.",
+    "Job" : "Poste"
 }
