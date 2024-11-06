@@ -31,7 +31,7 @@ class AbsenceController extends Controller
             return redirect()->route('login');
         }
 
-        if ($user->isAn('admin')) {
+        if ($user->isAn('rh')) {
             $absences = Absence::all();
         } else {
             $absences = Absence::all()->where('user_id', $user->id);
@@ -70,9 +70,9 @@ class AbsenceController extends Controller
         }
 
         $absence = $this->repository->store($request->validated(), $user);
-        $this->repository->notifyAdmins($absence);
+        $this->repository->notifyrhs($absence);
 
-        return redirect()->route('absence.index')->with('success', $user->isAn('salarie') ? __('An email has been sent to the administrators indicating your request') : __('Absence created successfully.'));
+        return redirect()->route('absence.index')->with('success', $user->isAn('salarie') ? __('An email has been sent to the rhistrators indicating your request') : __('Absence created successfully.'));
     }
 
     public function show(Absence $absence): RedirectResponse|View
@@ -85,7 +85,7 @@ class AbsenceController extends Controller
             return redirect()->route('login');
         }
 
-        if ($user->isAn('admin') || ($user->can('view-absences') && $user->id === $absence->user_id)) {
+        if ($user->isAn('rh') || ($user->can('view-absences') && $user->id === $absence->user_id)) {
             return view('detail_absence', compact('absence'));
         }
 
@@ -101,7 +101,7 @@ class AbsenceController extends Controller
             return redirect()->route('login');
         }
 
-        if ($user->isAn('admin') || ($user->can('edit-absences') && $user->id === $absence->user_id)) {
+        if ($user->isAn('rh') || ($user->can('edit-absences') && $user->id === $absence->user_id)) {
             $motifs = Motif::all();
             $users = User::all();
 
@@ -134,7 +134,7 @@ class AbsenceController extends Controller
             return redirect()->route('login');
         }
 
-        if ($user->isAn('admin')) {
+        if ($user->isAn('rh')) {
             $absence->statut = $absence->statut === 0 ? 1 : 0;
             $absence->save();
             if ($absence->statut === 1) {
@@ -157,7 +157,7 @@ class AbsenceController extends Controller
             return redirect()->route('login');
         }
 
-        if ($user->isAn('admin')) {
+        if ($user->isAn('rh')) {
             $absence->delete();
             $absenceUser = $absence->user;
             $absenceMotif = $absence->motif;
