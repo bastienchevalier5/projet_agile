@@ -142,7 +142,7 @@ class AbsenceController extends Controller
                 $absenceMotif = $absence->motif;
                 Mail::to($absenceUser->email)->send(new MailAbsenceValidee($absence,$user,$absenceMotif));
             }
-            return redirect()->route('absence.index')->with('success', __('Absence '.($absence->statut === 0 ? 'removed' : 'validated').' successfully.'));
+            return redirect()->route('absence.index')->with('success', __('Absence ' . ($absence->statut === 0 ? 'removed' : 'validated') . ' successfully.'));
         }
 
         return redirect()->route('absence.index')->with('error', "You don't have the permission to validate this absence.");
@@ -166,5 +166,34 @@ class AbsenceController extends Controller
         }
 
         return redirect()->route('absence.index')->with('error', __("You don't have the permission to refuse this absence."));
+    }
+    public function userPlanning(User $user): View|RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('admin') || $user->id === $user->id) {
+            $events = Auth::user()->absences;
+            $calendarEvents = [];
+
+            foreach ($events as $event) {
+                $event->statut === 1 ? $color = '#28a745' : $color = '#dc3545'; // Couleur de l'événement
+
+                $calendarEvents[] = [
+                    'title' => $event->motif->Libelle,
+                    'start' => $event->debut,
+                    'end' => $event->fin,
+                    'backgroundColor'=> $color,
+                ];
+            }
+            // dd($calendarEvents);
+            return view('absence.planning', compact('calendarEvents'));
+        }
+
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this planning."));
     }
 }

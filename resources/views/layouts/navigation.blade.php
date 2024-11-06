@@ -24,7 +24,11 @@
                         <x-nav-link :href="route('absence.index')" :active="request()->routeIs('absence.index')">
                             {{ __('Absences') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('absence.userplanning',['user' => Auth::user()])" :active="request()->routeIs('absence.userplanning')">
+                            {{ __('Planning') }}
+                        </x-nav-link>
                     @endcan
+
                 </div>
             </div>
             @if (Auth::user())
