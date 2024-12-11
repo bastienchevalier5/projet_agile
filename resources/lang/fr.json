@@ -173,5 +173,13 @@
     "Is the user an administrator?" : "Est-ce que l'utilisateur est administrateur?",
     "Users List" : "Liste des utilisateurs",
     "Reasons List" : "Liste des motifs",
-    "Absences List" : "Liste des absences"
+    "Absences List" : "Liste des absences",
+    "Your absence was refused" : "Votre absence a été refusée",
+    "Your absence was validated" : "Votre absence a été validée",
+    "An email has been sent to the user indicating your refusal." : "Un email a été envoyé à l'utilisateur lui indiquant votre refus.",
+    "Job" : "Poste",
+    "Age" : "Âge",
+    "Hire date" : "Date d'embauche",
+    "Seniority duration" : "Durée d'ancienneté",
+    "December" : "Décembre"
 }
