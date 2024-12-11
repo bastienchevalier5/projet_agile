@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Mail;
+use Illuminate\Support\Facades\Artisan;
 
 class AbsenceController extends Controller
 {
@@ -30,6 +31,7 @@ class AbsenceController extends Controller
         if (! $user) {
             return redirect()->route('login');
         }
+        Artisan::call('archive:old-absences');
 
         if ($user->isAn('rh')) {
             $absences = Absence::all();
