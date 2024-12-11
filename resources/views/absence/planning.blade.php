@@ -3,7 +3,7 @@
 @section('content')
 @if(Auth::user()->isAn('responsable'))
 <a href="{{ route('allplanning') }}">
-    Voir les absences de tout le monde
+    {{ __('See all team absences') }}
 </a>
 @endif
 <div id="calendar" class="m-2 mx-auto w-50"></div>

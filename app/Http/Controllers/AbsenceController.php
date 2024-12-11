@@ -206,7 +206,7 @@ class AbsenceController extends Controller
         }
 
         if ($user->isAn('responsable')) {
-            $events = Absence::all();
+            $events = User::find($user->id)->equipe->users->map->absences->flatten();
             $calendarEvents = [];
 
             foreach ($events as $event) {

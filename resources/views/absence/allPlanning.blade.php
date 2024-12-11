@@ -5,7 +5,7 @@
     $user = Auth::user();
 @endphp
 <a href="{{ route('absence.userplanning',$user) }}">
-    Voir juste ses absences
+    {{__('View only your absences')}}
 </a>
 <div id="calendar" class="m-2 mx-auto w-50"></div>
 
