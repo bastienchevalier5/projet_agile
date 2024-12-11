@@ -1,11 +1,12 @@
 @extends('layouts.app')
 @section('title',__('Reasons detail'))
 @section('content')
-@if(Auth::user()->isAn('responsable'))
-<a href="{{ route('allplanning') }}">
-    Voir les absences de tout le monde
+@php
+    $user = Auth::user();
+@endphp
+<a href="{{ route('absence.userplanning',$user) }}">
+    Voir juste ses absences
 </a>
-@endif
 <div id="calendar" class="m-2 mx-auto w-50"></div>
 
 <script type="module">

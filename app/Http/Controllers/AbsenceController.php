@@ -196,4 +196,33 @@ class AbsenceController extends Controller
 
         return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this planning."));
     }
+    public function allPlanning(): View|RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Vérification de l'authentification
+        if (! $user) {
+            return redirect()->route('login');
+        }
+
+        if ($user->isAn('responsable')) {
+            $events = Absence::all();
+            $calendarEvents = [];
+
+            foreach ($events as $event) {
+                $event->statut === 1 ? $color = '#28a745' : $color = '#dc3545'; // Couleur de l'événement
+                $title = $event->user->name . ' - ' . $event->motif->Libelle;
+                $calendarEvents[] = [
+                    'title' => $title,
+                    'start' => $event->debut,
+                    'end' => $event->fin,
+                    'backgroundColor'=> $color,
+                ];
+            }
+            // dd($calendarEvents);
+            return view('absence.allPlanning', compact('calendarEvents'));
+        }
+
+        return redirect()->route('absence.index')->with('error', __("You don't have the permission to access this planning."));
+    }
 }
