@@ -19,8 +19,8 @@ class AbsenceFactory extends Factory
     public function definition(): array
     {
         return [
-            'debut' => fake()->date(format: 'Y-m-d'),
-            'fin' => fake()->date('Y-m-d'),
+            'debut' => $debut = fake()->dateTimeBetween('-1 year', '+1 year')->format('Y-m-d'),
+            'fin' => fake()->dateTimeBetween($debut, $debut . ' +3 weeks')->format('Y-m-d'),
             'motif_id' => Motif::factory(),
             'user_id' => User::factory(),
 
