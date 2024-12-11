@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\AcceuilController;
+use App\Http\Controllers\JoursSensiblesController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\MotifController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Models\JoursSensibles;
 use Illuminate\Support\Facades\Route;
 
 
@@ -19,6 +21,7 @@ Route::middleware(['auth', 'langue'])->group(function () {
     Route::resource('absence', AbsenceController::class);
     Route::get('absence/{user}/planning', [AbsenceController::class, 'userPlanning'])->name('absence.userplanning');
     Route::get('allplanning', [AbsenceController::class, 'allPlanning'])->name('allplanning');
+    Route::resource('joursSensibles', JoursSensiblesController::class);
 
     Route::patch('absence/{absence}/validate', [AbsenceController::class, 'validateAbsence'])->name('absence.validate');
 

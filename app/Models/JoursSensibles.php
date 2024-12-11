@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Equipe extends Model
+class JoursSensibles extends Model
 {
     use HasFactory;
 
-    public function sensible() {
-        $this->belongsTo(JoursSensibles::class);
+    public function equipe() {
+        return $this->belongsTo(Equipe::class);
     }
 }
