@@ -15,5 +15,9 @@
         <a class="btn btn-secondary" href="{{ Route('motif.index')}}">{{__('Reasons list')}}</a>
     @endcan
     <a class="btn btn-secondary" href="{{ Route('absence.index')}}">{{__('Absences list')}}</a>
+
+    @if (Auth::user()->isAn('rh'))
+        <a class="btn btn-secondary" href="{{ Route('joursSensibles.index')}}">{{__('Sensible Period List')}}</a>
+    @endif
 </div>
 @endsection
