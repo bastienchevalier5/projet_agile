@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
         $user->age = 25;
         $user->date_embauche = now();
         $user->duree_anciennete = 5;
+        $user->equipe_id = 1;
         $user->save();
         Bouncer::assign('salarie')->to($user);
         Bouncer::allow('salarie')->to('view-absences');
@@ -61,9 +62,18 @@ class UserSeeder extends Seeder
         $responsable->age = 30;
         $responsable->date_embauche = now();
         $responsable->duree_anciennete = 7;
+        $responsable->equipe_id = 1;
         $responsable->save();
         Bouncer::assign('responsable')->to($responsable);
         Bouncer::allow('responsable')->to('view-planning-users');
+        Bouncer::allow('responsable')->to('view-absences');
+        Bouncer::allow('responsable')->to('create-absences');
+        Bouncer::allow('responsable')->to('edit-absences');
+        Bouncer::allow('responsable')->to('delete-absences');
+        Bouncer::allow('responsable')->to('view-users');
+        Bouncer::allow('responsable')->to('edit-users');
+        Bouncer::allow('responsable')->to('view-motifs');
+        Bouncer::allow('responsable')->to('view-equipe');
         User::factory(10)
             ->create();
     }

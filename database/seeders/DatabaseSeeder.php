@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         (new MotifSeeder)->run();
         (new AbsenceSeeder)->run();
+        (new EquipeSeeder)->run();
         (new UserSeeder)->run();
         // User::factory(10)->create();
 
