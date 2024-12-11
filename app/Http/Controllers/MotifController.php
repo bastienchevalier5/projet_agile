@@ -35,7 +35,7 @@ class MotifController extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->isAn('admin')) {
+        if ($user && $user->isAn('rh')) {
             $motifs = Cache::remember('motifs', 3600, function () {
                 return Motif::all();
             });
@@ -55,7 +55,7 @@ class MotifController extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->isAn('admin')) {
+        if ($user && $user->isAn('rh')) {
             $motif = new Motif();
 
             return view('motif_form', compact('motif'));
@@ -85,7 +85,7 @@ class MotifController extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->isAn('admin')) {
+        if ($user && $user->isAn('rh')) {
             return view('detail_motif', compact('motif'));
         }
 
@@ -129,7 +129,7 @@ class MotifController extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->isAn('admin')) {
+        if ($user && $user->isAn('rh')) {
             Cache::forget('motifs');
             $motif->delete();
 

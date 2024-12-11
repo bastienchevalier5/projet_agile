@@ -9,6 +9,16 @@
 
     <x-input label="{{ __('Email') }} : " name="email" type="email" :value="old('email', $user->email)" />
 
+    <x-input label="{{__('Age')}} : " name="age" type="number" :value="old('age', $user->age)" />
+
+    <x-input label="{{__('Job')}} : " name="poste" type="text" :value="old('poste', $user->poste)" />
+
+    <x-input label="{{__('Service')}} : " name="service" type="text" :value="old('service', $user->service)" />
+
+    <x-input label="{!!__('Hire date')!!} : " name="date_embauche" type="date" :value="old('date_embauche', $user->date_embauche)" />
+
+    <x-input label="{!!__('Seniority duration')!!} : " name="duree_anciennete" type="number" :value="old('duree_anciennete', $user->duree_anciennete)" />
+
     <div class="mt-4">
         <label>{{ __('Is the user an administrator?') }}</label>
         <div>

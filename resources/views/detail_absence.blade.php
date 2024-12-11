@@ -34,7 +34,7 @@
     <form action="{{Route('absence.destroy',$absence->id)}}" method="POST">
         @csrf
         @method('DELETE')
-        <button class="btn btn-danger m-3" type="submit" onclick="return confirm('{{__('Are you sure to want to delete this absence')}}')">{{__('Delete absence')}}</button>
+        <button class="btn btn-danger m-3" type="submit" onclick="return confirm('{{__('Are you sure to want to refuse this absence?')}}')">{{__('Refuse absence')}}</button>
     </form>
 @endcan
 @endsection

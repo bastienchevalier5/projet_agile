@@ -17,6 +17,7 @@ Route::middleware(['auth', 'langue'])->group(function () {
     Route::resource('motif', MotifController::class);
 
     Route::resource('absence', AbsenceController::class);
+    Route::get('Absence/{user}/planning', [AbsenceController::class, 'userPlanning'])->name('absence.userplanning');
 
     Route::patch('absence/{absence}/validate', [AbsenceController::class, 'validateAbsence'])->name('absence.validate');
 
