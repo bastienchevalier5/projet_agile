@@ -184,5 +184,7 @@
     "Job" : "Poste",
     "Age" : "Âge",
     "Hire date" : "Date d'embauche",
-    "Seniority duration" : "Durée d'ancienneté"
+    "Seniority duration" : "Durée d'ancienneté",
+    "December" : "Décembre",
+    "Next sensible period" : "Prochaine période sensible"
 }
