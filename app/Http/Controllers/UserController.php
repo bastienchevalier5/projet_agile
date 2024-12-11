@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->isAn('admin')) {
+        if ($user && $user->isAn('rh')) {
             $users = User::all();
 
             return view('lists', compact('users'));
@@ -52,7 +52,7 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        if ($user && $user->isAn('admin')) {
+        if ($user && $user->isAn('rh')) {
             $user = new User();
 
             return view('user_form', compact('user'));
@@ -82,7 +82,7 @@ class UserController extends Controller
     {
         $authUser = Auth::user();
 
-        if ($authUser && $authUser->isAn('admin')) {
+        if ($authUser && $authUser->isAn('rh')) {
             return view('detail_user', compact('user'));
         }
 
@@ -98,7 +98,7 @@ class UserController extends Controller
     {
         $authUser = Auth::user();
 
-        if ($authUser && $authUser->isAn('admin')) {
+        if ($authUser && $authUser->isAn('rh')) {
             $users = User::all();
 
             return view('user_form', compact('user'));

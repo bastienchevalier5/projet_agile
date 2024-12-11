@@ -43,6 +43,11 @@ class UserRepository
 
         $user->name = $inputs['name'];
         $user->email = $inputs['email'];
+        $user->age = $inputs['age'];
+        $user->poste = $inputs['poste'];
+        $user->service = $inputs['service'];
+        $user->date_embauche = $inputs['date_embauche'];
+        $user->duree_anciennete = $inputs['duree_anciennete'];
 
         $user->save();
 
