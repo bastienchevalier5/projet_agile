@@ -19,7 +19,7 @@
         <a class="btn btn-primary m-3" href="{{ Route('absence.edit',$absence->id)}}">{{__('Edit absence')}}</a>
     @endif
 @endcan
-@if (Auth::user()->isAn('admin'))
+@if (Auth::user()->isAn('rh'))
     <form action="{{ route('absence.validate', $absence->id) }}" method="POST">
         @csrf
         @method('PATCH')
