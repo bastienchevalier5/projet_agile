@@ -23,10 +23,12 @@
         selectable: true,
         dateClick: function (info) {
             alert('Date: ' + info.dateStr);
-        }
+        },
+        locale: '{{ app()->getLocale() }}' // Ajout de la localisation selon la langue du projet
     });
     calendar.render();
 });
+</script>
 
 </script>
 
