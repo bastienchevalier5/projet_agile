@@ -12,7 +12,10 @@
 <p>{{__('Beginning').' : '.\Carbon\Carbon::parse($absence->debut)->translatedFormat('d F Y')}}</p>
 <p>{{__('End').' : '.\Carbon\Carbon::parse($absence->fin)->translatedFormat('d F Y')}}</p>
 @if (Auth::user()->isAn('salarie'))
-    <p>{{$absence->statut == true ? __("Your absence has been validated") : __('Your absence has not yet been validated')}}</p>
+<p>
+    {{ $absence->statut == 3 ? __('Your absence has not yet been validated') :
+       ($absence->statut == 1 ? __('Your absence has been validated') : '') }}
+</p>
 @endif
 @can ('edit-absences')
     @if ($absence->statut == 0)
@@ -24,17 +27,17 @@
         @csrf
         @method('PATCH')
         <button class="btn btn-success m-3" type="submit"
-        onclick="return confirm('{{ __('Are you sure to want to') . ($absence->statut == 0 ? __(' validate') : __(' remove')) . __(' this absence ?') }}')">
-        {{ $absence->statut == 0 ? __('Validate') : __('Remove') }} {{__(' this absence')}}
+        onclick="return confirm('{{ __('Are you sure to want to') . ($absence->statut == 3 ? __(' validate') : __(' remove')) . __(' this absence ?') }}')">
+        {{ $absence->statut == 3 ? __('Validate') : __('Remove') }} {{__(' this absence')}}
         </button>
         </form>
 @endif
 
-@can('delete-absences')
+@if (Auth::user()->isAn('rh'))
     <form action="{{Route('absence.destroy',$absence->id)}}" method="POST">
         @csrf
         @method('DELETE')
         <button class="btn btn-danger m-3" type="submit" onclick="return confirm('{{__('Are you sure to want to refuse this absence?')}}')">{{__('Refuse absence')}}</button>
     </form>
-@endcan
+@endif
 @endsection

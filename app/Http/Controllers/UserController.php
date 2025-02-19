@@ -8,8 +8,10 @@ use App\Http\Repositories\UserRepository;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Auth;
+use Bouncer;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
+use Silber\Bouncer\Database\Role;
 
 class UserController extends Controller
 {
@@ -54,8 +56,9 @@ class UserController extends Controller
 
         if ($user && $user->isAn('rh')) {
             $user = new User();
-
-            return view('user_form', compact('user'));
+            $roles = Role::all();
+            $userRole = $user->roles->first()->id ?? null;
+            return view('user_form', compact('user','roles', 'userRole'));
         }
 
         return redirect()->route('accueil')->with('error', __("You don't have the permission to add a user."));
@@ -100,8 +103,9 @@ class UserController extends Controller
 
         if ($authUser && $authUser->isAn('rh')) {
             $users = User::all();
-
-            return view('user_form', compact('user'));
+            $roles = Role::all();
+            $userRole = $user->roles->first()->id ?? null;
+            return view('user_form', compact('user', 'roles', 'userRole'));
         }
 
         return redirect()->route('accueil')->with('error', __("You don't have the permission to edit a user."));

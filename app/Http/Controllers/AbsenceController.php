@@ -72,6 +72,7 @@ class AbsenceController extends Controller
         }
 
         $absence = $this->repository->store($request->validated(), $user);
+        $absence->statut = 2;
         $this->repository->notifyAdmins($absence);
 
         return redirect()->route('absence.index')->with('success', $user->isAn('salarie') ? __('An email has been sent to the rhistrators indicating your request') : __('Absence created successfully.'));
@@ -137,14 +138,14 @@ class AbsenceController extends Controller
         }
 
         if ($user->isAn('rh')) {
-            $absence->statut = $absence->statut === 0 ? 1 : 0;
+            $absence->statut = $absence->statut === 3 ? 1 : 3;
             $absence->save();
             if ($absence->statut === 1) {
                 $absenceUser = $absence->user;
                 $absenceMotif = $absence->motif;
                 Mail::to($absenceUser->email)->send(new MailAbsenceValidee($absence,$user,$absenceMotif));
             }
-            return redirect()->route('absence.index')->with('success', __('Absence ' . ($absence->statut === 0 ? 'removed' : 'validated') . ' successfully.'));
+            return redirect()->route('absence.index')->with('success', __('Absence ' . ($absence->statut === 3 ? 'removed' : 'validated') . ' successfully.'));
         }
 
         return redirect()->route('absence.index')->with('error', "You don't have the permission to validate this absence.");

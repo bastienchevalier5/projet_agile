@@ -51,12 +51,7 @@ class UserRepository
 
         $user->save();
 
-        if ($inputs['is_admin'] === 'yes') {
-            Bouncer::assign('admin')->to($user);
-        } else {
-            Bouncer::assign('salarie')->to($user);
-        }
-
+        Bouncer::sync($user)->roles([$inputs['role']]);
         return $user;
     }
 
