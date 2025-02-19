@@ -13,6 +13,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Mail;
+use Illuminate\Support\Facades\Artisan;
 
 class AbsenceController extends Controller
 {
@@ -136,38 +137,79 @@ class AbsenceController extends Controller
         }
 
         if ($user->isAn('rh')) {
-            $absence->statut = $absence->statut === 3 ? 1 : 3;
+            $absence->statut = 1;
             $absence->save();
             if ($absence->statut === 1) {
                 $absenceUser = $absence->user;
                 $absenceMotif = $absence->motif;
                 Mail::to($absenceUser->email)->send(new MailAbsenceValidee($absence,$user,$absenceMotif));
             }
-            return redirect()->route('absence.index')->with('success', __('Absence ' . ($absence->statut === 3 ? 'removed' : 'validated') . ' successfully.'));
+            return redirect()->route('absence.index')->with('success', __('Absence validated successfully.'));
         }
 
         return redirect()->route('absence.index')->with('error', "You don't have the permission to validate this absence.");
     }
 
-    public function destroy(Absence $absence): RedirectResponse
-    {
-        $user = Auth::user();
+    public function refuseAbsence(Absence $absence): RedirectResponse
+{
+    $user = Auth::user();
 
-        // Vérification de l'authentification
-        if (! $user) {
-            return redirect()->route('login');
-        }
+    // Vérification de l'authentification
+    if (! $user) {
+        return redirect()->route('login');
+    }
 
-        if ($user->isAn('rh')) {
-            $absence->delete();
+    if ($user->isAn('rh')) {
+        // Basculer entre "en attente" (3) et "refusé" (2)
+        $absence->statut =  0;
+        $absence->save();
+
+        if ($absence->statut === 0) {
             $absenceUser = $absence->user;
             $absenceMotif = $absence->motif;
-            Mail::to($absenceUser->email)->send(new MailAbsenceRefusee($absence,$user,$absenceMotif));
-            return redirect()->route('absence.index')->with('success', __('An email has been sent to the user indicating your refusal.'));
+            Mail::to($absenceUser->email)->send(new MailAbsenceRefusee($absence, $user, $absenceMotif));
         }
 
-        return redirect()->route('absence.index')->with('error', __("You don't have the permission to refuse this absence."));
+        return redirect()->route('absence.index')->with('success', __('Absence refused successfully.'));
     }
+
+    return redirect()->route('absence.index')->with('error', __("You don't have the permission to refuse this absence."));
+}
+
+public function historiqueRefusees()
+{
+    $user = Auth::user();
+
+    if (!$user) {
+        return redirect()->route('login');
+    }
+
+    $absencesRefusees = $user->absencesRefusees()->orderBy('created_at', 'desc')->get();
+
+    return view('absence_refusees', compact('absencesRefusees'));
+}
+
+
+
+    // public function destroy(Absence $absence): RedirectResponse
+    // {
+    //     $user = Auth::user();
+
+    //     // Vérification de l'authentification
+    //     if (! $user) {
+    //         return redirect()->route('login');
+    //     }
+
+    //     if ($user->isAn('rh')) {
+    //         $absence->delete();
+    //         $absenceUser = $absence->user;
+    //         $absenceMotif = $absence->motif;
+    //         Mail::to($absenceUser->email)->send(new MailAbsenceRefusee($absence,$user,$absenceMotif));
+    //         return redirect()->route('absence.index')->with('success', __('An email has been sent to the user indicating your refusal.'));
+    //     }
+
+    //     return redirect()->route('absence.index')->with('error', __("You don't have the permission to refuse this absence."));
+    // }
     public function userPlanning(User $user): View|RedirectResponse
     {
         $user = Auth::user();
@@ -207,7 +249,7 @@ class AbsenceController extends Controller
         }
 
         if ($user->isAn('responsable')) {
-            $events = Absence::all();
+            $events = User::find($user->id)->equipe->users->map->absences->flatten();
             $calendarEvents = [];
 
             foreach ($events as $event) {

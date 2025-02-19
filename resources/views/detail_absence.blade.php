@@ -14,30 +14,34 @@
 @if (Auth::user()->isAn('salarie'))
 <p>
     {{ $absence->statut == 3 ? __('Your absence has not yet been validated') :
-       ($absence->statut == 1 ? __('Your absence has been validated') : '') }}
+       ($absence->statut == 1 ? __('Your absence has been validated') :
+       ($absence->statut == 0 ? __('Your absence has been refused') : '')) }}
 </p>
+
 @endif
 @can ('edit-absences')
     @if ($absence->statut == 0)
         <a class="btn btn-primary m-3" href="{{ Route('absence.edit',$absence->id)}}">{{__('Edit absence')}}</a>
     @endif
 @endcan
-@if (Auth::user()->isAn('rh'))
+@if (Auth::user()->isAn(roles: 'rh') && $absence->statut != 1)
     <form action="{{ route('absence.validate', $absence->id) }}" method="POST">
         @csrf
         @method('PATCH')
         <button class="btn btn-success m-3" type="submit"
-        onclick="return confirm('{{ __('Are you sure to want to') . ($absence->statut == 3 ? __(' validate') : __(' remove')) . __(' this absence ?') }}')">
-        {{ $absence->statut == 3 ? __('Validate') : __('Remove') }} {{__(' this absence')}}
+        onclick="return confirm('{{ __('Are you sure to want to validate this absence ?') }}')">
+        {{ __('Validate')}} {{__(' this absence')}}
         </button>
         </form>
 @endif
 
-@if (Auth::user()->isAn('rh'))
-    <form action="{{Route('absence.destroy',$absence->id)}}" method="POST">
+@if (Auth::user()->isAn(roles: 'rh') && $absence->statut == 1)
+    <form action="{{ route('absence.refuse', $absence->id) }}" method="POST">
         @csrf
-        @method('DELETE')
-        <button class="btn btn-danger m-3" type="submit" onclick="return confirm('{{__('Are you sure to want to refuse this absence?')}}')">{{__('Refuse absence')}}</button>
+        @method('PATCH')
+        <button type="submit" class="btn btn-danger m-3" onclick="return confirm('{{ __('Are you sure to want to refuse this absence ?') }}')">
+            {{__('Refuse absence') }}
+        </button>
     </form>
 @endif
 @endsection

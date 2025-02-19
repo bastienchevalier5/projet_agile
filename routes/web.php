@@ -24,6 +24,9 @@ Route::middleware(['auth', 'langue'])->group(function () {
     Route::resource('joursSensibles', JoursSensiblesController::class);
 
     Route::patch('absence/{absence}/validate', [AbsenceController::class, 'validateAbsence'])->name('absence.validate');
+    Route::patch('absences/{absence}/refuse', [AbsenceController::class, 'refuseAbsence'])->name('absence.refuse');
+    Route::get('absences/refusees', [AbsenceController::class, 'historiqueRefusees'])->name('absence.refusees');
+
 
     Route::resource('user', UserController::class);
 

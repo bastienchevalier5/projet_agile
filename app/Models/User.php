@@ -102,4 +102,10 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
+
+    public function absencesRefusees()
+{
+    return $this->hasMany(Absence::class)->where('statut', 0);
+}
+
 }
