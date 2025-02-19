@@ -104,3 +104,43 @@ Mot de passe : responsable
 ### 8. Accéder à l'application
 
 Maintenant, vous devrez pouvoir atteindre l'application en allant sur l'url que vous avez indiqué.
+
+Voici la liste des Users storys effectués par l'équipe :
+
+
+1 Envoie de mail suite à un refus d’absence
+
+2 Envoie de mail suite à une validation d’absence
+
+3 Bouton de navigation vers la page planning
+
+6 Accéder à mon planning
+
+14 Modifications du statut des demande
+
+16 consulter le planning de ces équipes
+
+17 Historique des congés par employées
+
+RH-001 Paramétrage des horaires des salariés
+
+RH-002 Titre : listes des salariés
+
+RH-003 Titre : ajout salariés
+
+RH-004 Titre : modification salariés
+
+RH-005 Titre : suppression salariés
+
+28 Vue consolidée des absences par équipe
+
+29 Archivage des absences anciennes
+
+30 Notification par mail pour les absences critiques
+
+31 Création de périodes ou jours sensibles
+
+33 Historique des absences refusées 
+
+34 Rappel automatique des périodes sensibles
+
