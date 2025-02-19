@@ -23,7 +23,7 @@ class UserRequest extends FormRequest
     {
         $rules['name'] = 'required|string|max:100';
         $rules['email'] = 'required|email:rfc,dns';
-        $rules['is_admin'] = 'required|in:yes,no';
+        $rules['role'] = 'required';
 
         return $rules;
     }

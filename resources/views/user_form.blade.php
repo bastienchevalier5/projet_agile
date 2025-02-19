@@ -19,7 +19,7 @@
 
     <x-input label="{!!__('Seniority duration')!!} : " name="duree_anciennete" type="number" :value="old('duree_anciennete', $user->duree_anciennete)" />
 
-    <div class="mt-4">
+    {{-- <div class="mt-4">
         <label>{{ __('Is the user an administrator?') }}</label>
         <div>
             <input type="radio" id="admin_yes" name="is_admin" value="yes"
@@ -30,7 +30,9 @@
                 {{ old('is_admin', $user->exists && $user->isAn('admin') ? 'yes' : 'no') === 'no' ? 'checked' : '' }}>
             <label for="admin_no">{{ __('No') }}</label>
         </div>
-    </div>
+    </div> --}}
+
+    <x-select label="{!!__('User role')!!} : " name="role" :options="$roles->pluck('title', 'id')" :selected="$userRole" />
 
     <div class="mt-3">
         <x-button type="submit" color="secondary" actionType="{{$user->exists ? 'modify' : 'add'}}" entityType="user">
