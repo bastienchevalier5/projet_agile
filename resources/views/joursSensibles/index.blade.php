@@ -8,12 +8,17 @@
         <td class="w-25">{{__('Beginning')}}</td>
         <td class="w-25">{{__('End')}}</td>
         <td class="w-25">{{__('Team')}}</td>
+        <td class="w-25">Actions</td>
     </tr>
     <tr>
         @foreach ($sensibles as $sensible)
             <td>{{$sensible->debut}}</td>
             <td>{{$sensible->fin}}</td>
             <td>{{$sensible->equipe->nom}}</td>
+            <td><a class="btn btn-primary" href="{{route('joursSensibles.edit',$sensible->id)}}">{{__('Edit')}}</a>
+                <x-form action="{{Route('joursSensibles.destroy',$sensible->id)}}" method="DELETE">
+                    <x-button class="btn btn-danger m-3" type="submit" onclick="return confirm('{{__('Are you sure to want to delete this sensible period?')}}')">{{__('Delete')}}</x-button>
+                </x-form></td>
         @endforeach
     </tr>
 </table>

@@ -70,7 +70,7 @@ class AbsenceController extends Controller
         }
 
         $absence = $this->repository->store($request->validated(), $user);
-        $this->repository->notifyrhs($absence);
+        $this->repository->notifyAdmins($absence);
 
         return redirect()->route('absence.index')->with('success', $user->isAn('salarie') ? __('An email has been sent to the rhistrators indicating your request') : __('Absence created successfully.'));
     }
