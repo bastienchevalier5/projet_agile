@@ -182,6 +182,14 @@
     "Hire date" : "Date d'embauche",
     "Seniority duration" : "Durée d'ancienneté",
     "December" : "Décembre",
-    "See all team absences" : "Voir toutes les absences de l'équipe",
-    "View only your absences" : "Voir uniquement vos absences"
+    "Sensible Period List" : "Liste des périodes sensibles",
+    "Add a Sensible Period" : "Ajouter une période sensible",
+    "Team" : "Equipe",
+    "Sensible Period added with success" : "Période sensible ajoutée avec succès",
+    "You don't have the permission to add a sensible period." : "Vous n'avez pas la permission d'ajouter une période sensible.",
+    "Next sensible period" : "Prochaine période sensible",
+    "Edit" : "Modifier",
+    "Delete" : "Supprimer",
+    "User role" : "Rôle de l'utilisateur"
+
 }

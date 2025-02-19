@@ -19,7 +19,11 @@
                             {{ __('Reasons') }}
                         </x-nav-link>
                     @endcan
-
+                    @if (Auth::user()->isAn('rh'))
+                        <x-nav-link :href="route('joursSensibles.index')" :active="request()->routeIs('joursSensibles.index')">
+                            {{ __('Sensible Period List') }}
+                        </x-nav-link>
+                    @endif
                     @can('view-absences')
                         <x-nav-link :href="route('absence.index')" :active="request()->routeIs('absence.index')">
                             {{ __('Absences') }}
