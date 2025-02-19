@@ -107,4 +107,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsTo(Equipe::class);
     }
+
+    public function absencesRefusees()
+{
+    return $this->hasMany(Absence::class)->where('statut', 0);
+}
+
 }

@@ -32,6 +32,11 @@
                             {{ __('Planning') }}
                         </x-nav-link>
                     @endcan
+                    @if (Auth::user()->isAn('salarie'))
+                        <x-nav-link :href="route('absence.refusees')" :active="request()->routeIs('absence.refusees')">
+                            {{ __('Refused Absences History') }}
+                        </x-nav-link>
+                    @endif
 
                 </div>
             </div>

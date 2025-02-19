@@ -191,6 +191,13 @@
     "Edit" : "Modifier",
     "Delete" : "Supprimer",
     "User role" : "Rôle de l'utilisateur",
-    "Refuse absence" : "Refuser l'absence"
-
+    "Refuse absence" : "Refuser l'absence",
+    "Reopen absence" : "Réouvrir l'absence",
+    "Refused Absences History" : "Historique des absences refusées",
+    "Request Date" : "Date de la demande",
+    "Refusal Date" : "Date du refus",
+    "Are you sure to want to validate this absence ?" : "Êtes-vous sûr de vouloir valider cette absence ?",
+    "Are you sure to want to refuse this absence ?" : "Êtes-vous sûr de vouloir refuser cette absence ?",
+    "Absence refused successfully." : "Absence refusée avec succès.",
+    "Your Refused Absences" : "Vos absences refusées"
 }
