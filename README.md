@@ -89,14 +89,17 @@ php artisan db:seed
 ```
 ### 7. Logins et mot de passes
 
-Administrateur : 
-Email : admin@admin.fr
-Mot de passe : admin
+RH : 
+Email : rh@rh.fr
+Mot de passe : rh
 
 Utilisateur :
 Email : user@user.fr
 Mot de passe : user
 
+reponsable : 
+Email :  responsable@responsable.fr
+Mot de passe : responsable 
 
 ### 8. Accéder à l'application
 
